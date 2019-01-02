@@ -1,0 +1,69 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="#">VeduBox</a>
+  {{RoleNAME}}
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarColor01">
+
+    <ul *ngIf="!isAuthenticated" class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="register" routerLinkActive="active">Kayıt<span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+
+    <ul *ngIf="isAuthenticated && RoleNAME=='ADM'" class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="admin" routerLinkActive="active">Yönetici<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="ogretmen" routerLinkActive="active">Öğretmen</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="ogrenci" routerLinkActive="active">Öğrenci</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="ders" routerLinkActive="active">Ders</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="takvim" routerLinkActive="active">Ders Programı</a>
+      </li>
+    </ul>
+
+    <ul *ngIf="isAuthenticated && RoleNAME=='TEA'" class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="ogretmen" routerLinkActive="active">Öğretmen<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="ders" routerLinkActive="active">Ders</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="takvim" routerLinkActive="active">Ders Programı</a>
+      </li>
+    </ul>
+
+    <ul *ngIf="isAuthenticated && RoleNAME=='STU'" class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="ogrenci" routerLinkActive="active">Öğrenci<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="ders" routerLinkActive="active">Ders</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="takvim" routerLinkActive="active">Ders Programı</a>
+      </li>
+    </ul>
+
+    <form *ngIf="!isAuthenticated" #loginForm="ngForm" (ngSubmit)="loginsubmit()" class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" name="email" [(ngModel)]="loginUser.email" required type="text" placeholder="email veya kullanıcı adı">
+      <input class="form-control mr-sm-2" name="password" [(ngModel)]="loginUser.password" required type="password"
+        placeholder="şifre/parola">
+      <button class="btn btn-secondary my-2 my-sm-0" [disabled]="!loginForm.valid" type="submit">Giriş</button>
+    </form>
+    <button class="btn btn-secondary my-2 my-sm-0" *ngIf="isAuthenticated" (click)="logOut()" type="submit">Çıkış
+      [{{LoggedUserName}}]</button>
+  </div>
+</nav>
+{{TokenExpireDate}} {{IsTokenExpired}}

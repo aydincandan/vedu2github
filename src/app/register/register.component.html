@@ -1,0 +1,59 @@
+<div class="myformCARD">
+  <form [formGroup]="registerForm" (ngSubmit)="register()" class="form-register">
+
+    <h4>Kayıt ol</h4>
+
+    <!-- <div class="form-group">
+      <div class="input-group mb-3">
+        <div id="SOL" class="input-group-prepend"><span class="input-group-text" id="SECTINIZ1" for="kisiTipi">Lütfen Seçiniz</span></div>
+        <select onchange="SMARTSELECTON();" class="custom-select" id="kisiTipi" name="kisiTipi" formControlName="kisiTipi">
+          <option value="TEA">Öğretmen</option>
+          <option value="STU">Öğrenci</option>
+          <option *ngIf="showADMopt" value="ADM">Yönetici</option>
+        </select>
+        <div id="SAG" class="input-group-append"><span class="input-group-text" id="SECTINIZ2" for="kisiTipi">?</span></div>
+      </div>
+      <span class="help-block" *ngIf="registerForm.get('kisiTipi').hasError('required') && registerForm.get('kisiTipi').touched">Öğrenci yada Öğretmen Seçiniz</span>
+    </div> -->
+
+    <div class="input-group input-group-sm mb-3">
+      <div id="SOL" class="input-group-prepend"><span class="input-group-text" id="SECTINIZ1" for="kisiTipi">Lütfen Seçiniz</span></div>
+      <select onchange="SMARTSELECTON();" class="form-control" id="kisiTipi" name="kisiTipi" formControlName="kisiTipi" autofocus>
+        <option value="TEA">Öğretmen</option>
+        <option value="STU">Öğrenci</option>
+        <option *ngIf="showADMopt" value="ADM">Yönetici</option>
+      </select>
+      <div id="SAG" class="input-group-append"><span class="input-group-text" id="SECTINIZ2" for="kisiTipi">?</span></div>
+      <span class="help-block" *ngIf="registerForm.get('kisiTipi').hasError('required') && registerForm.get('kisiTipi').touched">Öğrenci yada Öğretmen Seçiniz</span>
+    </div>
+
+    <div class="input-group input-group-sm mb-3">
+      <div class="input-group-prepend"><span class="input-group-text">email</span></div>
+      <input type="text" id="email" name="email" formControlName="email" class="form-control" placeholder="giriniz">
+      <span class="help-block" *ngIf="registerForm.get('email').hasError('required') && registerForm.get('email').touched">email gerekli</span>
+    </div>
+
+    <div class="input-group input-group-sm mb-3">
+      <div class="input-group-prepend"><span class="input-group-text">şifre</span></div>
+      <input type="password" id="password" name="password" formControlName="password" class="form-control" placeholder="giriniz">
+      <span class="help-block" *ngIf="registerForm.get('password').hasError('required') && registerForm.get('password').touched">Şifre gerekli</span>
+      <span class="help-block" *ngIf="registerForm.get('password').hasError('minlength') && registerForm.get('password').touched">Şifre en az 4 karakter olmalıdır</span>
+      <span class="help-block" *ngIf="registerForm.get('password').hasError('maxlength') && registerForm.get('password').touched">Şifre 18 karakteri geçemez</span>
+    </div>
+
+    <div class="input-group input-group-sm mb-3">
+      <div class="input-group-prepend"><span class="input-group-text">şifre</span></div>
+      <input type="password" id="confirmPassword" name="confirmPassword" formControlName="confirmPassword" class="form-control" placeholder="tekrar">
+      <span class="help-block" *ngIf="registerForm.get('confirmPassword').hasError('required') && registerForm.get('confirmPassword').touched">Şifre tekrarı gerekli</span>
+      <span class="help-block" *ngIf="registerForm.get('confirmPassword').touched && registerForm.hasError('mismatch')">Şifreler uyumsuz</span>
+    </div>
+
+    <div class="text-right">
+      <button [disabled]="!registerForm.valid" type="submit" class="btn btn-primary btn-sm">Tamam</button>
+    </div>
+
+    <div>{{registerForm.value|json}}</div>
+    <div>{{registerForm.status|json}}</div>
+
+  </form>
+</div>

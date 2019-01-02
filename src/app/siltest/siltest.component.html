@@ -1,0 +1,70 @@
+<form [formGroup]="registerForm" (ngSubmit)="register()" class="form-register">
+    <h2 class="mt-5">Kayıt ol</h2>
+  
+    <div class="form-group">
+      <div class="input-group mb-3">
+        <div id="SOL" class="input-group-prepend">
+          <label class="input-group-text" id="SECTINIZ1" for="kisiTipi">Lütfen Seçiniz</label>
+        </div>
+        <select onchange="SMARTSELECTON();" class="custom-select" id="kisiTipi" name="kisiTipi" formControlName="kisiTipi" autofocus>
+          <option value="TEA">Öğretmen</option>
+          <option value="STU">Öğrenci</option>
+          <option *ngIf="showADMopt" value="ADM">Yönetici</option>
+        </select>
+        <div id="SAG" class="input-group-prepend">
+          <label class="input-group-text" id="SECTINIZ2" for="kisiTipi">?</label>
+        </div>
+      </div>
+      <span class="help-block" *ngIf="registerForm.get('kisiTipi').hasError('required') && registerForm.get('kisiTipi').touched">Öğrenci yada Öğretmen Seçiniz</span>
+    </div>
+  
+    <div class="form-group">
+      <input type="email" id="email" name="email" formControlName="email" class="form-control" placeholder="E-mail" autofocus>
+      <span class="help-block" *ngIf="registerForm.get('email').hasError('required') && registerForm.get('email').touched">E-mail gerekli</span>
+    </div>
+  
+    <div class="form-group">
+      <input type="password" id="password" name="password" formControlName="password" class="form-control" placeholder="Şifre">
+      <span class="help-block" *ngIf="registerForm.get('password').hasError('required') && registerForm.get('password').touched">Şifre gerekli</span>
+      <span class="help-block" *ngIf="registerForm.get('password').hasError('minlength') && registerForm.get('password').touched">Şifre en az 4 karakter olmalıdır</span>
+      <span class="help-block" *ngIf="registerForm.get('password').hasError('maxlength') && registerForm.get('password').touched">Şifre 18 karakteri geçemez</span>
+    </div>
+  
+    <div class="form-group">
+      <input type="password" id="confirmPassword" name="confirmPassword" formControlName="confirmPassword" class="form-control" placeholder="Şifre tekrarı">
+      <span class="help-block" *ngIf="registerForm.get('confirmPassword').hasError('required') && registerForm.get('confirmPassword').touched">Şifre doğrulama gerekli</span>
+      <span class="help-block" *ngIf="registerForm.get('confirmPassword').touched && registerForm.hasError('mismatch')">Şifreler uyumsuz</span>
+    </div>
+  
+    <button class="btn btn-lg btn-primary btn-block" [disabled]="!registerForm.valid" type="submit" data-toggle="modal" data-target="#exampleModalCenter">Tamam</button>
+    <h6>{{registerForm.value|json}}</h6>
+    <h6>{{registerForm.status|json}}</h6>
+  
+  </form>
+  https://stackoverflow.com/questions/23775272/bootstrap-modal-before-form-submit
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+    Launch demo modal
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
