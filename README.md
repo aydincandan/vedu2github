@@ -1,5 +1,12 @@
 # Vedu2
 
+## Nasıl atılır
+git remote add vedu2github https://github.com/aydincandan/vedu2github.git (1 kerelik gerekiyor)
+username soracak
+şifre soracak
+git push --set-upstream vedu2github master
+
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.1.0.
 
 ## Development server
