@@ -2,9 +2,14 @@
 
 ## Nasıl atılır
 git remote add vedu2github https://github.com/aydincandan/vedu2github.git (1 kerelik gerekiyor)
+
 username soracak
+
 şifre soracak
+
 git push --set-upstream vedu2github master
+
+ref : http://blog.yararman.com/visual-studio-code-ile-github-kullanimi/
 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.1.0.
