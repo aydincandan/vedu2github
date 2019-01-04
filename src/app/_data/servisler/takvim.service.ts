@@ -35,7 +35,7 @@ export class TakvimService {
       this.router.navigateByUrl('/takvimDetay/' + data["ID"])
     }
       , Error => {
-        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error.modelStateAddedErrors[0].errorMessage; // YetkisizlikMetkisizlik
         console.log("ooops:", this.subscribeERR)
         this.alertifyService.error(this.subscribeERR);
       }

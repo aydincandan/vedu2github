@@ -35,7 +35,7 @@ export class DersService {
       this.router.navigateByUrl('/dersDetay/' + data["ID"])
     }
       , Error => {
-        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error.modelStateAddedErrors[0].errorMessage; // YetkisizlikMetkisizlik
         console.log("ooops:", this.subscribeERR)
         this.alertifyService.error(this.subscribeERR);
       }

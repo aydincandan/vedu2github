@@ -48,15 +48,11 @@ export class AuthService {
       .subscribe(data => {
         this.alertifyService.success("auth.service.KisiRegister(" + localStorage.getItem(_LUK) + ") sisteme kaydedildi")
       }
-      , Error => {
-        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error.modelStateAddedErrors[0].errorMessage; // YetkisizlikMetkisizlik
-        console.log("ooops:", this.subscribeERR)
-        this.alertifyService.error(this.subscribeERR);
-      }
-      // , Error => {
-        //   this.subscribeERR = Error; console.log("ooops:", Error.error)
-        //   this.alertifyService.error("auth.service Sisteme Kayıt yapılamadı. " + Error.error);
-        // }
+        , Error => {
+          this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error.modelStateAddedErrors[0].errorMessage; // YetkisizlikMetkisizlik
+          console.log("ooops:", this.subscribeERR)
+          this.alertifyService.error(this.subscribeERR);
+        }
       );
   }
 
@@ -81,27 +77,18 @@ export class AuthService {
           localStorage.setItem("TokenExpireDate", this.myDateToString(this.jwtHelper.getTokenExpirationDate(this.userToken)))
           localStorage.setItem("IsTokenExpired", this.myBoolToString(this.jwtHelper.isTokenExpired(this.userToken)))
         }
+          , Error => {
+            this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error.modelStateAddedErrors[0].errorMessage; // YetkisizlikMetkisizlik
+            console.log("ooops:", this.subscribeERR)
+            this.alertifyService.error(this.subscribeERR);
+          }
+        )
+      }
         , Error => {
-          this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+          this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error.modelStateAddedErrors[0].errorMessage; // YetkisizlikMetkisizlik
           console.log("ooops:", this.subscribeERR)
           this.alertifyService.error(this.subscribeERR);
         }
-          // , Error => {
-          //   this.subscribeERR = Error; console.log("ooops:", Error.error)
-          //   this.alertifyService.error("auth.service KisiLogin.getLoggedKisi() bulunamadı ! " + Error.error);
-          // }
-        )
-      }
-      , Error => {
-        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error.modelStateAddedErrors[0].errorMessage; // YetkisizlikMetkisizlik
-        console.log("ooops:", this.subscribeERR)
-        this.alertifyService.error(this.subscribeERR);
-      }
-      // , Error => {
-        //   this.subscribeERR = Error.statusText + "(" + Error.status + ")"; 
-        //   console.log("ooops:", this.subscribeERR)
-        //   this.alertifyService.error("Yetkisizlik . " + this.subscribeERR);
-        // }
       );
     this.router.navigate(['/welcome'])
   }
