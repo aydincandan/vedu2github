@@ -49,7 +49,7 @@ export class AuthService {
         this.alertifyService.success("auth.service.KisiRegister(" + localStorage.getItem(_LUK) + ") sisteme kaydedildi")
       }
       , Error => {
-        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error.error;
+        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error.modelStateAddedErrors[0].errorMessage; // YetkisizlikMetkisizlik
         console.log("ooops:", this.subscribeERR)
         this.alertifyService.error(this.subscribeERR);
       }
