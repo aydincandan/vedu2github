@@ -3,6 +3,12 @@
 PS C:\ops\vedu2github> git pull https://github.com/aydincandan/vedu2github.git master
 
 ## Nasıl remote source(github), localden yaratılır ve güncellenir
+... Stage All Changes
+... Commit All [Branch soracak : master]    
+... Push
+
+veya
+
 git remote add vedu2github https://github.com/aydincandan/vedu2github.git (1 kerelik gerekiyor)
 
 username soracak
