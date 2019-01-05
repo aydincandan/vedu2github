@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http"
 import { Observable } from 'rxjs';
-import { __Kisi,ogretmenUpdateDto } from '../modeller/hepsi.model';
+import { __Kisi, ogretmenUpdateDto } from '../modeller/hepsi.model';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 

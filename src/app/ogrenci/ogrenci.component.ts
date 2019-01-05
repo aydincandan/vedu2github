@@ -115,8 +115,7 @@ export class OgrenciComponent implements OnInit { subscribeERR: any = {}
     this.ogrenciService.getOgrenci(xx).subscribe(data => {
       this.rowData = data;
       // console.log(this.rowData)
-      this.setOgrenciForm() // böyle de oluyor 
-      // fakat başka doğru çözümü olabilir gibi... https://www.concretepage.com/angular-2/angular-2-4-formbuilder-example
+      this.setOgrenciForm()
     }
     , Error => {
       this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;

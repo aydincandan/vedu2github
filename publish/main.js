@@ -775,7 +775,7 @@ var AdminComponent = /** @class */ (function () {
             _this.rowData = data;
             // console.log(this.rowData)
             _this.setAdminForm(); // böyle de oluyor 
-            // fakat başka doğru çözümü olabilir gibi... https://www.concretepage.com/angular-2/angular-2-4-formbuilder-example
+            // fakat başka doğru çözümü olabilir gibi... https://yazilimgunlugu.org/angular-4-form-kullanimi-dogrulama-validations/
         }, function (Error) {
             _this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
             console.log("ooops:", _this.subscribeERR);
@@ -1723,7 +1723,7 @@ var OgrenciComponent = /** @class */ (function () {
             _this.rowData = data;
             // console.log(this.rowData)
             _this.setOgrenciForm(); // böyle de oluyor 
-            // fakat başka doğru çözümü olabilir gibi... https://www.concretepage.com/angular-2/angular-2-4-formbuilder-example
+            // fakat başka doğru çözümü olabilir gibi... https://yazilimgunlugu.org/angular-4-form-kullanimi-dogrulama-validations/
         }, function (Error) {
             _this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
             console.log("ooops:", _this.subscribeERR);
@@ -1890,7 +1890,7 @@ var OgretmenComponent = /** @class */ (function () {
             _this.rowData = data;
             // console.log(this.rowData)
             _this.setOgretmenForm(); // böyle de oluyor 
-            // fakat başka doğru çözümü olabilir gibi... https://www.concretepage.com/angular-2/angular-2-4-formbuilder-example
+            // fakat başka doğru çözümü olabilir gibi... https://yazilimgunlugu.org/angular-4-form-kullanimi-dogrulama-validations/
         }, function (Error) {
             _this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
             console.log("ooops:", _this.subscribeERR);

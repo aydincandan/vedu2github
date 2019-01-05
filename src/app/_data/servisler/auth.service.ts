@@ -129,4 +129,22 @@ export class AuthService {
     else
       return "false"
   }
+
+  delKisi(Id: number): Observable<__Kisi[]> {
+    let istek: string = environment.api_url + "/Auth/Kisiler/delete/" + Id;
+    console.log("istek : " + istek)
+    return this.httpClient.delete<__Kisi[]>(istek)
+  }
+
+  getKisi(Id: number): Observable<__Kisi[]> {
+    let istek: string = environment.api_url + "/Auth/Kisiler/" + Id;
+    console.log("istek : " + istek)
+    return this.httpClient.get<__Kisi[]>(istek)
+  }
+
+  getKisiler(): Observable<__Kisi[]> {
+    let istek: string = environment.api_url + "/Auth/Kisiler";
+    console.log("istek : " + istek)
+    return this.httpClient.get<__Kisi[]>(istek)
+  }
 }

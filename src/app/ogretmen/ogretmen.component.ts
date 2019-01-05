@@ -118,8 +118,7 @@ export class OgretmenComponent implements OnInit { subscribeERR: any = {}
     this.ogretmenService.getOgretmen(xx).subscribe(data => {
       this.rowData = data;
       // console.log(this.rowData)
-      this.setOgretmenForm() // böyle de oluyor 
-      // fakat başka doğru çözümü olabilir gibi... https://www.concretepage.com/angular-2/angular-2-4-formbuilder-example
+      this.setOgretmenForm()
     }
     , Error => {
       this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
