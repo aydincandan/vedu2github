@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { __Kisi, adminUpdateDto } from '../_data/modeller/hepsi.model';
 import { AdminService } from "../_data/servisler/admin.service";
+import { OgrenciService } from "../_data/servisler/ogrenci.service";
+import { OgretmenService } from "../_data/servisler/ogretmen.service";
 import { AlertifyService } from '../_data/servisler/alertify.service';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -29,7 +31,10 @@ export class AdminComponent implements OnInit {
   private rowSelection;
   private gridColumnApi;
 
-  constructor(private adminService: AdminService, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, private alertifyService: AlertifyService) {
+  constructor(private adminService: AdminService, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, private alertifyService: AlertifyService
+    , private ogrenciService: OgrenciService
+    , private ogretmenService: OgretmenService
+  ) {
 
     this.columnDefs = [
       { headerName: 'TYPE', field: 'kisitipi' },
@@ -154,6 +159,34 @@ export class AdminComponent implements OnInit {
       }
     )
   }
+  getOgrenci(xx: number) {
+    this.ogrenciService.getOgrenci(xx).subscribe(data => {
+      this.rowData = data;
+      // console.log(this.rowData)
+      this.setAdminForm() // böyle de oluyor 
+      // fakat başka doğru çözümü olabilir gibi... https://www.concretepage.com/angular-2/angular-2-4-formbuilder-example
+    }
+      , Error => {
+        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+        console.log("ooops:", this.subscribeERR)
+        this.alertifyService.error(this.subscribeERR);
+      }
+    )
+  }
+  getOgretmen(xx: number) {
+    this.ogretmenService.getOgretmen(xx).subscribe(data => {
+      this.rowData = data;
+      // console.log(this.rowData)
+      this.setAdminForm() // böyle de oluyor 
+      // fakat başka doğru çözümü olabilir gibi... https://www.concretepage.com/angular-2/angular-2-4-formbuilder-example
+    }
+      , Error => {
+        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+        console.log("ooops:", this.subscribeERR)
+        this.alertifyService.error(this.subscribeERR);
+      }
+    )
+  }
 
   getKisiler() {
     this.adminService.getAdminler().subscribe(data => { this.rowData = data }
@@ -164,9 +197,10 @@ export class AdminComponent implements OnInit {
       }
     )
   }
-  delKisi(aydi:number) {
-    this.adminService.delKisi(aydi).subscribe(data => { this.rowData = data;
-      this.alertifyService.success(aydi+" silindi.");
+  delKisi(aydi: number) {
+    this.adminService.delKisi(aydi).subscribe(data => {
+    this.rowData = data;
+      this.alertifyService.success(aydi + " silindi.");
     }
       , Error => {
         this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
@@ -179,7 +213,14 @@ export class AdminComponent implements OnInit {
   ide: number
   onRowClicked(event: any) {
     console.log('event.data.IdE', event.data.idE); let ide = event.data.idE;
-    this.getAdmin(ide)
+
+    if (event.data.kisitipi == "ADM")
+      this.getAdmin(ide)
+    else if (event.data.kisitipi == "STU")
+      this.getOgrenci(ide)
+    else if (event.data.kisitipi == "TEA")
+      this.getOgretmen(ide)
+
     return ide;
   }
 
@@ -191,12 +232,12 @@ export class AdminComponent implements OnInit {
   removeSelected() {
     var selectedData = this.gridApi.getSelectedRows();
 
-    for(var i in selectedData) {
+    for (var i in selectedData) {
       console.log(i + ' = ' + selectedData[i].idE);
       this.delKisi(selectedData[i].idE);
     }
 
     var res = this.gridApi.updateRowData({ remove: selectedData });
-    console.log("res",res);
+    console.log("res", res);
   }
 }
