@@ -1,6 +1,8 @@
 # Vedu2
+## Nasıl local source, remote source(github)'dan güncellenir
+PS C:\ops\vedu2github> git pull https://github.com/aydincandan/vedu2github.git master
 
-## Nasıl atılır
+## Nasıl remote source(github), localden yaratılır ve güncellenir
 git remote add vedu2github https://github.com/aydincandan/vedu2github.git (1 kerelik gerekiyor)
 
 username soracak
