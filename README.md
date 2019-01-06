@@ -1,4 +1,16 @@
 # Vedu2
+## Super Git Guide Kaynak
+http://rogerdudler.github.io/git-guide/index.tr.html
+
+ayrıca http://volkanaltan.blogspot.com/2012/05/git-notlarm.html
+
+ayrıca https://medium.com/kodcular/k%C4%B1saca-git-ba0877d56663
+
+ayrıca https://medium.com/@odayibasi/git-komutlar%C4%B1-ve-kullan%C4%B1m%C4%B1-51ec0c07a434
+
+ayrıca https://www.slideshare.net/vigoo1/nsanlar-iin-git
+
+
 ## Nasıl local source, remote source(github)'dan güncellenir
 PS C:\ops\vedu2github> git pull https://github.com/aydincandan/vedu2github.git master
 

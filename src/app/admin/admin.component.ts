@@ -1,8 +1,8 @@
 // **
 import { Component, OnInit } from '@angular/core';
 
-import { __Kisi, adminUpdateDto, ogrenciUpdateDto, ogretmenUpdateDto } 
-from '../_data/modeller/hepsi.model';
+import { __Kisi, adminUpdateDto, ogrenciUpdateDto, ogretmenUpdateDto }
+  from '../_data/modeller/hepsi.model';
 
 import { AuthService } from "../_data/servisler/auth.service";
 import { AdminService } from "../_data/servisler/admin.service";
@@ -18,6 +18,7 @@ import {
   FormControl,
   FormArray
 } from '@angular/forms';
+import { DISABLED } from '@angular/forms/src/model';
 
 // import { forEach } from '@angular/router/src/utils/collection';
 
@@ -29,11 +30,13 @@ import {
 })
 export class AdminComponent implements OnInit {
 
+  // @Input('dynrol') 
+  private dynrol: string //= "STU"
+
   subscribeERR: any = {}
 
   get RoleNAME() { return localStorage.getItem("RoleNAME") }
 
-  private dynrol: string;
   private gridApi;
   private rowData: any[];
 
@@ -71,21 +74,16 @@ export class AdminComponent implements OnInit {
   ngOnInit() {
     this.fillAgGrid1()
 
-    this.createAdminForm();
-    // this.createOgrenciForm();
-    // this.createOgretmenForm();
-
-    this.getAdmin(this.updateKisiID);
-    // this.getOgrenci(this.updateKisiID);
-    // this.getOgretmen(this.updateKisiID);
-
     console.log("this.updateKisiID:", this.updateKisiID)
+    console.log("this.dynrol:", this.dynrol)
+
+    this.createBaseForm()
 
     this.activatedRoute.params.subscribe(params => {
       let xx: number = params["ID"]
       console.log("param : " + xx)
       if (xx)
-        this.getAdmin(xx);
+        this.getAdminToSetForm(xx);
       else
         this.getKisiler();
     }
@@ -99,12 +97,12 @@ export class AdminComponent implements OnInit {
 
   updateKisiID = parseInt(localStorage.getItem("IdE"));
   //rowData: __Kisi[];
-  adminForm: FormGroup;
+  myDynFormGroup: FormGroup;
 
   adminUpdate: any = {}
   ogrenciUpdate: any = {}
   ogretmenUpdate: any = {}
-  
+
   rowDatas1: __Kisi[];
 
   fillAgGrid1() {
@@ -118,7 +116,7 @@ export class AdminComponent implements OnInit {
   }
 
   setAdminForm() {
-    this.adminForm = this.formBuilder.group(
+    this.myDynFormGroup = this.formBuilder.group(
       {
         Username: [this.rowData[0].UserName, Validators.required],
         Adi: [this.rowData[0].adi, Validators.required],
@@ -130,7 +128,7 @@ export class AdminComponent implements OnInit {
     )
   }
   setOgrenciForm() {
-    this.adminForm = this.formBuilder.group(
+    this.myDynFormGroup = this.formBuilder.group(
       {
         Username: [this.rowData[0].UserName, Validators.required],
         Adi: [this.rowData[0].adi, Validators.required],
@@ -142,7 +140,7 @@ export class AdminComponent implements OnInit {
     )
   }
   setOgretmenForm() {
-    this.adminForm = this.formBuilder.group(
+    this.myDynFormGroup = this.formBuilder.group(
       {
         Username: [this.rowData[0].UserName, Validators.required],
         Adi: [this.rowData[0].adi, Validators.required],
@@ -154,58 +152,57 @@ export class AdminComponent implements OnInit {
     )
   }
 
-  createAdminForm() {
-    this.adminForm = this.formBuilder.group(
+  CTRL_Username = new FormControl('1', Validators.required)
+  CTRL_Adi = new FormControl('2', Validators.required)
+  CTRL_Soyadi = new FormControl('3', Validators.required)
+  CTRL_TCkimlik = new FormControl('4', [Validators.minLength(11), Validators.maxLength(11)])
+  CTRL_telefon1 = new FormControl('5', [Validators.minLength(10), Validators.maxLength(10)])
+  createBaseForm() {
+    this.myDynFormGroup = this.formBuilder.group(
       {
-        Username: ["", Validators.required],
-        Adi: ["", Validators.required],
-        Soyadi: ["", Validators.required],
-        TCkimlik: ["", [Validators.minLength(11), Validators.maxLength(11)]],
-        telefon1: ["", Validators.required],
-        YetkiSeviye: ["",],
-      }
-    )
-  }
-  createOgrenciForm() {
-    this.adminForm = this.formBuilder.group(
-      {
-        Username: ["", Validators.required],
-        Adi: ["", Validators.required],
-        Soyadi: ["", Validators.required],
-        TCkimlik: ["", [Validators.minLength(11), Validators.maxLength(11)]],
-        telefon1: ["", Validators.required],
-        IlgiAlanlari: ["",],
-      }
-    )
-  }
-  createOgretmenForm() {
-    this.adminForm = this.formBuilder.group(
-      {
-        Username: ["", Validators.required],
-        Adi: ["", Validators.required],
-        Soyadi: ["", Validators.required],
-        TCkimlik: ["", [Validators.minLength(11), Validators.maxLength(11)]],
-        telefon1: ["", Validators.required],
-        UzmanlikAlanlari: ["",],
+        Username: this.CTRL_Username,
+        Adi: this.CTRL_Adi,
+        Soyadi: this.CTRL_Soyadi,
+        TCkimlik: this.CTRL_TCkimlik,
+        telefon1: this.CTRL_telefon1
       }
     )
   }
 
+  handleKisi() {
+    if (this.myDynFormGroup.valid) {
+
+      if (this.dynrol == "ADM")
+        this.editAdmin()
+      else if (this.dynrol == "STU")
+        this.editOgrenci()
+      else if (this.dynrol == "TEA") {
+        // this.roleOzelAlan = new FormControl('öğretmen uzmanlık alanları')
+
+        // /** Gruba ekle*/
+        // this.myDynFormGroup.addControl("UzmanlikAlanlari", this.roleOzelAlan)
+        this.editOgretmen()
+      }
+
+    }
+  }
   editAdmin() {
-    if (this.adminForm.valid) {
-      this.adminUpdate = Object.assign({}, this.adminForm.value)
-      console.log(this.adminUpdate)
-      let ogrkisi: adminUpdateDto = new adminUpdateDto;
-      ogrkisi.IdE = this.updateKisiID;
-      ogrkisi.YetkiSeviye = this.adminForm.value.YetkiSeviye;
-      ogrkisi.Username = this.adminForm.value.Username;
-      ogrkisi.Adi = this.adminForm.value.Adi;
-      ogrkisi.Soyadi = this.adminForm.value.Soyadi;
-      ogrkisi.TCkimlik = this.adminForm.value.TCkimlik;
-      ogrkisi.telefon1 = this.adminForm.value.telefon1;
-      this.adminService.putAdmin(ogrkisi).subscribe(fff => { console.log(fff) }
-        , Error => {
-          this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+    if (this.myDynFormGroup.valid) {
+      this.adminUpdate = Object.assign({}, this.myDynFormGroup.value)
+      console.log("sendUpdateValues:", this.adminUpdate)
+      let kisi: adminUpdateDto = new adminUpdateDto;
+      kisi.IdE = this.updateKisiID;
+      kisi.Username = this.myDynFormGroup.value.Username;
+      kisi.Adi = this.myDynFormGroup.value.Adi;
+      kisi.Soyadi = this.myDynFormGroup.value.Soyadi;
+      kisi.TCkimlik = this.myDynFormGroup.value.TCkimlik;
+      kisi.telefon1 = this.myDynFormGroup.value.telefon1;
+      kisi.YetkiSeviye = this.myDynFormGroup.value.YetkiSeviye;
+
+      this.adminService.putAdmin(kisi).subscribe(
+        OkReturn => { console.log("OkReturn:", OkReturn); this.alertifyService.success("ok ok ok ok"); }
+        , xError => {
+          this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
           console.log("ooops:", this.subscribeERR)
           this.alertifyService.error(this.subscribeERR);
         }
@@ -213,20 +210,22 @@ export class AdminComponent implements OnInit {
     }
   }
   editOgrenci() {
-    if (this.adminForm.valid) {
-      this.ogrenciUpdate = Object.assign({}, this.adminForm.value)
-      console.log(this.ogrenciUpdate)
-      let ogrkisi: ogrenciUpdateDto = new ogrenciUpdateDto;
-      ogrkisi.IdE = this.updateKisiID;
-      ogrkisi.IlgiAlanlari = this.adminForm.value.IlgiAlanlari;
-      ogrkisi.Username = this.adminForm.value.Username;
-      ogrkisi.Adi = this.adminForm.value.Adi;
-      ogrkisi.Soyadi = this.adminForm.value.Soyadi;
-      ogrkisi.TCkimlik = this.adminForm.value.TCkimlik;
-      ogrkisi.telefon1 = this.adminForm.value.telefon1;
-      this.ogrenciService.putOgrenci(ogrkisi).subscribe(fff => { console.log(fff) }
-        , Error => {
-          this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+    if (this.myDynFormGroup.valid) {
+      this.ogrenciUpdate = Object.assign({}, this.myDynFormGroup.value)
+      console.log("sendUpdateValues:", this.ogrenciUpdate)
+      let kisi: ogrenciUpdateDto = new ogrenciUpdateDto;
+      kisi.IdE = this.updateKisiID;
+      kisi.Username = this.myDynFormGroup.value.Username;
+      kisi.Adi = this.myDynFormGroup.value.Adi;
+      kisi.Soyadi = this.myDynFormGroup.value.Soyadi;
+      kisi.TCkimlik = this.myDynFormGroup.value.TCkimlik;
+      kisi.telefon1 = this.myDynFormGroup.value.telefon1;
+      kisi.IlgiAlanlari = this.myDynFormGroup.value.IlgiAlanlari;
+
+      this.ogrenciService.putOgrenci(kisi).subscribe(
+        OkReturn => { console.log("OkReturn:", OkReturn); this.alertifyService.success("ok ok ok ok"); }
+        , xError => {
+          this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
           console.log("ooops:", this.subscribeERR)
           this.alertifyService.error(this.subscribeERR);
         }
@@ -234,20 +233,22 @@ export class AdminComponent implements OnInit {
     }
   }
   editOgretmen() {
-    if (this.adminForm.valid) {
-      this.ogretmenUpdate = Object.assign({}, this.adminForm.value)
-      console.log(this.ogretmenUpdate)
-      let ogrkisi: ogretmenUpdateDto = new ogretmenUpdateDto;
-      ogrkisi.IdE = this.updateKisiID;
-      ogrkisi.UzmanlikAlanlari = this.adminForm.value.UzmanlikAlanlari;
-      ogrkisi.Username = this.adminForm.value.Username;
-      ogrkisi.Adi = this.adminForm.value.Adi;
-      ogrkisi.Soyadi = this.adminForm.value.Soyadi;
-      ogrkisi.TCkimlik = this.adminForm.value.TCkimlik;
-      ogrkisi.telefon1 = this.adminForm.value.telefon1;
-      this.ogretmenService.putOgretmen(ogrkisi).subscribe(fff => { console.log(fff) }
-        , Error => {
-          this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+    if (this.myDynFormGroup.valid) {
+      this.ogretmenUpdate = Object.assign({}, this.myDynFormGroup.value)
+      console.log("sendUpdateValues:", this.ogretmenUpdate)
+      let kisi: ogretmenUpdateDto = new ogretmenUpdateDto;
+      kisi.IdE = this.updateKisiID;
+      kisi.Username = this.myDynFormGroup.value.Username;
+      kisi.Adi = this.myDynFormGroup.value.Adi;
+      kisi.Soyadi = this.myDynFormGroup.value.Soyadi;
+      kisi.TCkimlik = this.myDynFormGroup.value.TCkimlik;
+      kisi.telefon1 = this.myDynFormGroup.value.telefon1;
+      kisi.UzmanlikAlanlari = this.myDynFormGroup.value.UzmanlikAlanlari;
+
+      this.ogretmenService.putOgretmen(kisi).subscribe(
+        OkReturn => { console.log("OkReturn:", OkReturn); this.alertifyService.success("ok ok ok ok"); }
+        , xError => {
+          this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
           console.log("ooops:", this.subscribeERR)
           this.alertifyService.error(this.subscribeERR);
         }
@@ -255,7 +256,7 @@ export class AdminComponent implements OnInit {
     }
   }
 
-  getAdmin(xx: number) {
+  getAdminToSetForm(xx: number) {
     this.adminService.getAdmin(xx).subscribe(data => {
       this.rowData = data;
       // console.log(this.rowData)
@@ -269,7 +270,7 @@ export class AdminComponent implements OnInit {
       }
     )
   }
-  getOgrenci(xx: number) {
+  getOgrenciToSetForm(xx: number) {
     this.ogrenciService.getOgrenci(xx).subscribe(data => {
       this.rowData = data;
       // console.log(this.rowData)
@@ -283,7 +284,7 @@ export class AdminComponent implements OnInit {
       }
     )
   }
-  getOgretmen(xx: number) {
+  getOgretmenToSetForm(xx: number) {
     this.ogretmenService.getOgretmen(xx).subscribe(data => {
       this.rowData = data;
       // console.log(this.rowData)
@@ -320,18 +321,50 @@ export class AdminComponent implements OnInit {
     )
   }
 
+  formTitle: string = 'Sabit Bilgileri'
+  buttonText: string = 'Tamam'
+  roleOzelAlan: FormControl
   ide: number
   onRowClicked(event: any) {
-    console.log('event.data.IdE', event.data.idE); let ide = event.data.idE;
+    console.log('event.data.IdE', event.data.idE); 
+    
+    let ide = event.data.idE;
 
     this.dynrol = event.data.kisitipi
+    this.updateKisiID = ide
 
-    if (this.dynrol == "ADM")
-      this.getAdmin(ide)
-    else if (this.dynrol == "STU")
-      this.getOgrenci(ide)
-    else if (this.dynrol == "TEA")
-      this.getOgretmen(ide)
+    if (this.dynrol == 'ADM' || !this.dynrol) {
+      this.buttonText = 'Tamam';
+      this.formTitle = 'Yönetici Sabit Bilgileri';
+
+      this.roleOzelAlan = new FormControl('yönetici yetki seviyesi')
+
+      /** Gruba ekle*/
+      this.myDynFormGroup.addControl("YetkiSeviye", this.roleOzelAlan)
+      this.getAdminToSetForm(ide)
+    }
+    else if (this.dynrol == 'STU') {
+      this.buttonText = 'Tamam';
+      this.formTitle = 'Öğrenci Sabit Bilgileri';
+
+      this.roleOzelAlan = new FormControl('öğrenci ilgi alanları')
+
+      /** Gruba ekle*/
+      this.myDynFormGroup.addControl("IlgiAlanlari", this.roleOzelAlan)
+      this.getOgrenciToSetForm(ide)
+    }
+    else if (this.dynrol == 'TEA') {
+      this.buttonText = 'Tamam';
+      this.formTitle = 'Öğretmen Sabit Bilgileri';
+
+      this.roleOzelAlan = new FormControl('öğretmen uzmanlık alanları')
+
+      /** Gruba ekle*/
+      this.myDynFormGroup.addControl("UzmanlikAlanlari", this.roleOzelAlan)
+      this.getOgretmenToSetForm(ide)
+    }
+
+
 
     return ide;
   }

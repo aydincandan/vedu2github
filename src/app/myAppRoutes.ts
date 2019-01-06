@@ -10,6 +10,7 @@ import { WelcomeComponent } from "./welcome/welcome.component";
 import { SiltestComponent } from './siltest/siltest.component';
 import { AgTestComponent } from './agTest/agTest.component';
 import { AgTest2Component } from './agTest2/agTest2.component';
+import { AdminFormComponent } from './adminForm/adminForm.component';
 
 
 
@@ -17,6 +18,8 @@ export const myAppRoutes: Routes = [
     { path: "siltest", component: SiltestComponent },
     { path: "agTest", component: AgTestComponent },
     { path: "agTest2", component: AgTest2Component },
+
+    { path: "adminForm", component: AdminFormComponent },
 
     { path: "ogrenci", component: OgrenciComponent },
     { path: "ogrenci/:iD", component: OgrenciComponent },

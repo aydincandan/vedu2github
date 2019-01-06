@@ -22,6 +22,7 @@ import { SiltestComponent } from './siltest/siltest.component';
 import { SlimLoadingBarModule } from 'ng2-slim-loading-bar';
 import { AgTestComponent } from './agTest/agTest.component';
 import { AgTest2Component } from './agTest2/agTest2.component';
+import { AdminFormComponent } from './adminForm/adminForm.component';
 
 @NgModule({
    declarations: [
@@ -36,7 +37,8 @@ import { AgTest2Component } from './agTest2/agTest2.component';
       WelcomeComponent,
       SiltestComponent,
       AgTestComponent,
-      AgTest2Component
+      AgTest2Component,
+      AdminFormComponent
    ],
    imports: [
       BrowserModule,

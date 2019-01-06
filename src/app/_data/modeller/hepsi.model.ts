@@ -14,30 +14,30 @@ export class UserForLoginDto {
 }
 export class ogretmenUpdateDto {
     IdE: number
-    UzmanlikAlanlari:string
-    Username:string
-    Adi:string
-    Soyadi:string
-    TCkimlik:string
+    Username: string
+    Adi: string
+    Soyadi: string
+    TCkimlik: string
     telefon1: string
+    UzmanlikAlanlari: string
 }
 export class ogrenciUpdateDto {
     IdE: number
-    IlgiAlanlari:string
-    Username:string
-    Adi:string
-    Soyadi:string
-    TCkimlik:string
+    Username: string
+    Adi: string
+    Soyadi: string
+    TCkimlik: string
     telefon1: string
+    IlgiAlanlari: string
 }
 export class adminUpdateDto {
     IdE: number
-    YetkiSeviye:string
-    Username:string
-    Adi:string
-    Soyadi:string
-    TCkimlik:string
+    Username: string
+    Adi: string
+    Soyadi: string
+    TCkimlik: string
     telefon1: string
+    YetkiSeviye: string
 }
 // entity objelerim
 export class __Kisi {
@@ -48,7 +48,7 @@ export class __Kisi {
     adi: string
     soyadi: string
     tckimlik: string
-    UzmanlikAlanlari: string ; IlgiAlanlari:string ; YetkiSeviye:string
+    UzmanlikAlanlari: string; IlgiAlanlari: string; YetkiSeviye: string
     Sirano: number
     tumtelefonlari: []
     tumadresleri: []
