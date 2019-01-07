@@ -1,4 +1,4 @@
-// **
+// ***
 import { Component, OnInit } from '@angular/core';
 
 import { __Kisi, adminUpdateDto, ogrenciUpdateDto, ogretmenUpdateDto }
@@ -18,20 +18,16 @@ import {
   FormControl,
   FormArray
 } from '@angular/forms';
-import { DISABLED } from '@angular/forms/src/model';
-
-// import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css'],
-  providers: [AuthService, AdminService, OgrenciService, OgretmenService, AlertifyService] // gerek var mı?
+  // olmasa oluyor mu? providers: [AuthService, AdminService, OgrenciService, OgretmenService, AlertifyService] // gerek var mı?
 })
 export class AdminComponent implements OnInit {
 
-  // @Input('dynrol') 
-  private dynrol: string //= "STU"
+  dynrol: string
 
   subscribeERR: any = {}
 
@@ -40,8 +36,8 @@ export class AdminComponent implements OnInit {
   private gridApi;
   private rowData: any[];
 
-  private columnDefs;
-  private rowSelection;
+  public columnDefs: any;
+  public rowSelection: any;
   private gridColumnApi;
 
   constructor(private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, private alertifyService: AlertifyService
@@ -176,13 +172,8 @@ export class AdminComponent implements OnInit {
         this.editAdmin()
       else if (this.dynrol == "STU")
         this.editOgrenci()
-      else if (this.dynrol == "TEA") {
-        // this.roleOzelAlan = new FormControl('öğretmen uzmanlık alanları')
-
-        // /** Gruba ekle*/
-        // this.myDynFormGroup.addControl("UzmanlikAlanlari", this.roleOzelAlan)
+      else if (this.dynrol == "TEA")
         this.editOgretmen()
-      }
 
     }
   }
@@ -326,8 +317,8 @@ export class AdminComponent implements OnInit {
   roleOzelAlan: FormControl
   ide: number
   onRowClicked(event: any) {
-    console.log('event.data.IdE', event.data.idE); 
-    
+    console.log('event.data.IdE', event.data.idE);
+
     let ide = event.data.idE;
 
     this.dynrol = event.data.kisitipi
@@ -363,8 +354,6 @@ export class AdminComponent implements OnInit {
       this.myDynFormGroup.addControl("UzmanlikAlanlari", this.roleOzelAlan)
       this.getOgretmenToSetForm(ide)
     }
-
-
 
     return ide;
   }

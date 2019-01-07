@@ -11,6 +11,7 @@ import { AdminComponent } from './admin/admin.component';
 import { OgrenciComponent } from './ogrenci/ogrenci.component';
 import { OgretmenComponent } from './ogretmen/ogretmen.component';
 import { DersComponent } from './ders/ders.component';
+import { DersDetayComponent } from './ders/dersDetay/dersDetay.component';
 import { TakvimComponent } from './takvim/takvim.component';
 import { RegisterComponent } from './register/register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -20,9 +21,6 @@ import { AgGridModule } from 'ag-grid-angular';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { SiltestComponent } from './siltest/siltest.component';
 import { SlimLoadingBarModule } from 'ng2-slim-loading-bar';
-import { AgTestComponent } from './agTest/agTest.component';
-import { AgTest2Component } from './agTest2/agTest2.component';
-import { AdminFormComponent } from './adminForm/adminForm.component';
 
 @NgModule({
    declarations: [
@@ -30,15 +28,12 @@ import { AdminFormComponent } from './adminForm/adminForm.component';
       AdminComponent,
       OgrenciComponent,
       OgretmenComponent,
-      DersComponent,
+      DersComponent, DersDetayComponent,
       TakvimComponent,
       RegisterComponent,
       NavComponent,
       WelcomeComponent,
-      SiltestComponent,
-      AgTestComponent,
-      AgTest2Component,
-      AdminFormComponent
+      SiltestComponent
    ],
    imports: [
       BrowserModule,

@@ -11,7 +11,9 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class DersComponent implements OnInit {
   subscribeERR: any = {}
-  private columnDefs;
+
+  public columnDefs: any;
+
   constructor(private dersService: DersService, private activatedRoute: ActivatedRoute) {
     this.columnDefs = [
       { headerName: 'ID', field: 'idE' },
