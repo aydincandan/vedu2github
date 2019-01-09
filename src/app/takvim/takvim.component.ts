@@ -79,4 +79,9 @@ export class TakvimComponent implements OnInit {
   ide: number
   onRowClicked(event: any) { console.log('event.data.IdE', event.data.idE); let ide = event.data.idE; return ide; }
 
+  dersProgramiEkle() {
+    this.alertifyService.error("ders programı eklendi");
+
+  }
+
 }

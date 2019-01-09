@@ -83,8 +83,8 @@ export class AdminComponent implements OnInit {
       else
         this.getKisiler();
     }
-      , Error => {
-        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
         this.alertifyService.error(this.subscribeERR);
       }
@@ -103,8 +103,8 @@ export class AdminComponent implements OnInit {
 
   fillAgGrid1() {
     this.authService.getKisiler().subscribe(data => { this.rowDatas1 = data }
-      , Error => {
-        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
         this.alertifyService.error(this.subscribeERR);
       }
@@ -254,8 +254,8 @@ export class AdminComponent implements OnInit {
       this.setAdminForm()
       // fakat başka doğru çözümü olabilir gibi... https://yazilimgunlugu.org/angular-4-form-kullanimi-dogrulama-validations/
     }
-      , Error => {
-        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
         this.alertifyService.error(this.subscribeERR);
       }
@@ -268,8 +268,8 @@ export class AdminComponent implements OnInit {
       this.setOgrenciForm()
       // fakat başka doğru çözümü olabilir gibi... https://yazilimgunlugu.org/angular-4-form-kullanimi-dogrulama-validations/
     }
-      , Error => {
-        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
         this.alertifyService.error(this.subscribeERR);
       }
@@ -282,8 +282,8 @@ export class AdminComponent implements OnInit {
       this.setOgretmenForm()
       // fakat başka doğru çözümü olabilir gibi... https://yazilimgunlugu.org/angular-4-form-kullanimi-dogrulama-validations/
     }
-      , Error => {
-        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
         this.alertifyService.error(this.subscribeERR);
       }
@@ -292,8 +292,8 @@ export class AdminComponent implements OnInit {
 
   getKisiler() {
     this.adminService.getAdminler().subscribe(data => { this.rowData = data }
-      , Error => {
-        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
         this.alertifyService.error(this.subscribeERR);
       }
@@ -304,8 +304,8 @@ export class AdminComponent implements OnInit {
       this.rowData = data;
       this.alertifyService.success(aydi + " silindi.");
     }
-      , Error => {
-        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
         this.alertifyService.error(this.subscribeERR);
       }

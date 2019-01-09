@@ -23,7 +23,7 @@ export class RegisterComponent implements OnInit {
 
     this.activatedRoute.queryParams.subscribe(params => {
       this.showADMopt = params['showADMopt'];
-      console.log(this.showADMopt); // Print the parameter to the console. 
+      console.log("showADMopt: ", this.showADMopt); // Print the parameter to the console. 
     }
     , xError => {
       this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;

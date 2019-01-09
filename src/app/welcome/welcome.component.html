@@ -9,8 +9,11 @@ https://stackoverflow.com/questions/23775272/bootstrap-modal-before-form-submit 
     Launch demo modal
   </button>
    -->
-  <div style="font-size:72px">Welcome to Demo Site</div>
-  <p>Please click on the '<b>Kayıt</b>' link above to register as a '<b>Öğrenci</b>' or '<b>Öğretmen</b>'.</p>
+<div class="container">
+  <div style="font-size:72px">Welcome to Demo App</div>
+  <p *ngIf="!isAuthenticated">Please click on the '<b>Kayıt</b>' link above to register as a '<b>Öğrenci</b>' or '<b>Öğretmen</b>'.</p>
+</div>
+  
   <!-- Modal -->
   <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

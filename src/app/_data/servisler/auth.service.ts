@@ -40,7 +40,7 @@ export class AuthService {
     return this.httpClient.get<__Kisi[]>(istek)
   }
 
-  KisiRegister(registerUser: UserForRegisterDto) {
+  KisiRegister(registerUser: UserForRegisterDto): void {
     let headers = new HttpHeaders()
     headers = headers.append("Content-Type", "application/json")
     this.httpClient
