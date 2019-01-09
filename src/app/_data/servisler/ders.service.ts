@@ -34,8 +34,8 @@ export class DersService {
       console.log("istek : " + istek)
       this.router.navigateByUrl('/dersDetay/' + data["ID"])
     }
-      , Error => {
-        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error.modelStateAddedErrors[0].errorMessage; // YetkisizlikMetkisizlik
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
         this.alertifyService.error(this.subscribeERR);
       }

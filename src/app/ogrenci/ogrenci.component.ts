@@ -18,7 +18,8 @@ import {
   // providers: [OgrenciService]
 })
 
-export class OgrenciComponent implements OnInit { subscribeERR: any = {}
+export class OgrenciComponent implements OnInit { 
+  subscribeERR: any = {}
   get RoleNAME() { return localStorage.getItem("RoleNAME") }
 
   private columnDefs;
@@ -50,8 +51,8 @@ export class OgrenciComponent implements OnInit { subscribeERR: any = {}
       else
         this.getOgrenciler();
     }
-    , Error => {
-      this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+    , xError => {
+      this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
       console.log("ooops:", this.subscribeERR)
       this.alertifyService.error(this.subscribeERR);
     }
@@ -102,8 +103,8 @@ export class OgrenciComponent implements OnInit { subscribeERR: any = {}
       ogrkisi.TCkimlik = this.ogrenciForm.value.TCkimlik;
       ogrkisi.telefon1 = this.ogrenciForm.value.telefon1;
       this.ogrenciService.putOgrenci(ogrkisi).subscribe(fff => { console.log(fff) }
-      , Error => {
-        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
         this.alertifyService.error(this.subscribeERR);
       }
@@ -117,8 +118,8 @@ export class OgrenciComponent implements OnInit { subscribeERR: any = {}
       // console.log(this.rowData)
       this.setOgrenciForm()
     }
-    , Error => {
-      this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+    , xError => {
+      this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
       console.log("ooops:", this.subscribeERR)
       this.alertifyService.error(this.subscribeERR);
     }
@@ -126,8 +127,8 @@ export class OgrenciComponent implements OnInit { subscribeERR: any = {}
   }
 
   getOgrenciler() { this.ogrenciService.getOgrenciler().subscribe(data => { this.rowData = data }
-    , Error => {
-      this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+    , xError => {
+      this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
       console.log("ooops:", this.subscribeERR)
       this.alertifyService.error(this.subscribeERR);
     }

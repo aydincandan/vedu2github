@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class TakvimComponent implements OnInit {
   subscribeERR: any = {}
+  get RoleNAME() { return localStorage.getItem("RoleNAME") }
 
   public columnDefs: any;
 
@@ -27,9 +28,10 @@ export class TakvimComponent implements OnInit {
   rowDatas1 = [];
   fillAgGrid1() {
     this.takvimService.getTakvimler().subscribe(data => { this.rowDatas1 = data }
-      , Error => {
-        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
+        this.alertifyService.error(this.subscribeERR);
       }
     )
   }
@@ -45,9 +47,10 @@ export class TakvimComponent implements OnInit {
       else
         this.getTakvimler();
     }
-      , Error => {
-        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
+        this.alertifyService.error(this.subscribeERR);
       }
     )
   }
@@ -55,17 +58,19 @@ export class TakvimComponent implements OnInit {
   takvimler: __Takvim[]
   getTakvim(xx: number) {
     this.takvimService.getTakvim(xx).subscribe(data => { this.takvimler = data }
-      , Error => {
-        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
+        this.alertifyService.error(this.subscribeERR);
       }
     )
   }
   getTakvimler() {
     this.takvimService.getTakvimler().subscribe(data => { this.takvimler = data }
-      , Error => {
-        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
+        this.alertifyService.error(this.subscribeERR);
       }
     )
   }

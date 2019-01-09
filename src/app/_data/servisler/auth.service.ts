@@ -48,8 +48,8 @@ export class AuthService {
       .subscribe(data => {
         this.alertifyService.success("auth.service.KisiRegister(" + localStorage.getItem(_LUK) + ") sisteme kaydedildi")
       }
-        , Error => {
-          this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error.modelStateAddedErrors[0].errorMessage; // YetkisizlikMetkisizlik
+        , xError => {
+          this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error.modelStateAddedErrors[0].errorMessage; // YetkisizlikMetkisizlik
           console.log("ooops:", this.subscribeERR)
           this.alertifyService.error(this.subscribeERR);
         }
@@ -77,15 +77,15 @@ export class AuthService {
           localStorage.setItem("TokenExpireDate", this.myDateToString(this.jwtHelper.getTokenExpirationDate(this.userToken)))
           localStorage.setItem("IsTokenExpired", this.myBoolToString(this.jwtHelper.isTokenExpired(this.userToken)))
         }
-          , Error => {
-            this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error.modelStateAddedErrors[0].errorMessage; // YetkisizlikMetkisizlik
+          , xError => {
+            this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error.modelStateAddedErrors[0].errorMessage; // YetkisizlikMetkisizlik
             console.log("ooops:", this.subscribeERR)
             this.alertifyService.error(this.subscribeERR);
           }
         )
       }
-        , Error => {
-          this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error.modelStateAddedErrors[0].errorMessage; // YetkisizlikMetkisizlik
+        , xError => {
+          this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error.modelStateAddedErrors[0].errorMessage; // YetkisizlikMetkisizlik
           console.log("ooops:", this.subscribeERR)
           this.alertifyService.error(this.subscribeERR);
         }

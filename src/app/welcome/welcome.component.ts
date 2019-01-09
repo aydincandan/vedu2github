@@ -5,7 +5,9 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.scss']
 })
-export class WelcomeComponent implements OnInit { subscribeERR: any = {}
+export class WelcomeComponent implements OnInit { 
+  subscribeERR: any = {}
+  get RoleNAME() { return localStorage.getItem("RoleNAME") }
 
   constructor() { }
 

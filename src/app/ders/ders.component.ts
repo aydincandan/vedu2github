@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { __Ders } from '../_data/modeller/hepsi.model';
 import { DersService } from "../_data/servisler/ders.service";
 import { ActivatedRoute } from '@angular/router';
+import { AlertifyService } from '../_data/servisler/alertify.service';
 
 @Component({
   selector: 'app-ders',
@@ -11,10 +12,11 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class DersComponent implements OnInit {
   subscribeERR: any = {}
+  get RoleNAME() { return localStorage.getItem("RoleNAME") }
 
   public columnDefs: any;
 
-  constructor(private dersService: DersService, private activatedRoute: ActivatedRoute) {
+  constructor(private dersService: DersService, private activatedRoute: ActivatedRoute, private alertifyService: AlertifyService) {
     this.columnDefs = [
       { headerName: 'ID', field: 'idE' },
       { headerName: 'TITLE', field: 'title' },
@@ -26,9 +28,10 @@ export class DersComponent implements OnInit {
   rowDatas1 = [];
   fillAgGrid1() {
     this.dersService.getDersler().subscribe(data => { this.rowDatas1 = data }
-      , Error => {
-        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
+        this.alertifyService.error(this.subscribeERR);
       }
     )
   }
@@ -44,9 +47,10 @@ export class DersComponent implements OnInit {
       else
         this.getDersler();
     }
-      , Error => {
-        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
+        this.alertifyService.error(this.subscribeERR);
       }
     )
   }
@@ -55,22 +59,33 @@ export class DersComponent implements OnInit {
 
   getDers(xx: number) {
     this.dersService.getDers(xx).subscribe(data => { this.dersler = data }
-      , Error => {
-        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
+        this.alertifyService.error(this.subscribeERR);
       }
     )
   }
   getDersler() {
     this.dersService.getDersler().subscribe(data => { this.dersler = data }
-      , Error => {
-        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
+        this.alertifyService.error(this.subscribeERR);
       }
     )
   }
 
   ide: number
-  onRowClicked(event: any) { console.log('event.data.IdE', event.data.idE); let ide = event.data.idE; return ide; }
+  onRowClicked(event: any) {
+    console.log('event.data.IdE', event.data.idE);
+    let ide = event.data.idE;
+    this.alertifyService.error("on row clicked");
+    return ide;
+  }
 
+  dersEkle() {
+    this.alertifyService.error("ders eklendi");
+
+  }
 }

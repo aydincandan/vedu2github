@@ -18,7 +18,8 @@ import {
   // providers: [OgretmenService]
 })
 
-export class OgretmenComponent implements OnInit { subscribeERR: any = {}
+export class OgretmenComponent implements OnInit { 
+  subscribeERR: any = {}
   get RoleNAME() { return localStorage.getItem("RoleNAME") }
 
   private columnDefs;
@@ -52,8 +53,8 @@ export class OgretmenComponent implements OnInit { subscribeERR: any = {}
       else
         this.getOgretmenler();
     }
-    , Error => {
-      this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+    , xError => {
+      this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
       console.log("ooops:", this.subscribeERR)
       this.alertifyService.error(this.subscribeERR);
     }
@@ -105,8 +106,8 @@ export class OgretmenComponent implements OnInit { subscribeERR: any = {}
       ogrkisi.TCkimlik = this.ogretmenForm.value.TCkimlik;
       ogrkisi.telefon1 = this.ogretmenForm.value.telefon1;
       this.ogretmenService.putOgretmen(ogrkisi).subscribe(fff => { console.log(fff) }
-      , Error => {
-        this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
         this.alertifyService.error(this.subscribeERR);
       }
@@ -120,8 +121,8 @@ export class OgretmenComponent implements OnInit { subscribeERR: any = {}
       // console.log(this.rowData)
       this.setOgretmenForm()
     }
-    , Error => {
-      this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+    , xError => {
+      this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
       console.log("ooops:", this.subscribeERR)
       this.alertifyService.error(this.subscribeERR);
     }
@@ -129,8 +130,8 @@ export class OgretmenComponent implements OnInit { subscribeERR: any = {}
   }
 
   getOgretmenler() { this.ogretmenService.getOgretmenler().subscribe(data => { this.rowData = data }
-    , Error => {
-      this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+    , xError => {
+      this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
       console.log("ooops:", this.subscribeERR)
       this.alertifyService.error(this.subscribeERR);
     }

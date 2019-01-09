@@ -23,9 +23,10 @@ export class SiltestComponent implements OnInit { subscribeERR: any = {}
       this.showADMopt = params['showADMopt'];
       console.log(this.showADMopt); // Print the parameter to the console. 
     }
-    , Error => {
-      this.subscribeERR = Error.statusText + "(" + Error.status + ") " + Error.error;
+    , xError => {
+      this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
       console.log("ooops:", this.subscribeERR)
+      this.alertifyService.error(this.subscribeERR);
     }
 );
 
