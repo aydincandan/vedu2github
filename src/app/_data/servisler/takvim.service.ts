@@ -32,7 +32,7 @@ export class TakvimService {
     this.httpClient.post(istek, data).subscribe(data => {
       this.alertifyService.success("Takvim (ID : " + data["ID"] + ") başarıyla eklendi.")
       console.log("istek : " + istek)
-      this.router.navigateByUrl('/takvimDetay/' + data["ID"])
+      // this.router.navigateByUrl('/takvimDetay/' + data["ID"])
     }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;

@@ -16,7 +16,7 @@ export class TakvimComponent implements OnInit {
 
   public columnDefs: any;
 
-  constructor(private takvimService: TakvimService, private activatedRoute: ActivatedRoute, private alertifyService:AlertifyService) {
+  constructor(private takvimService: TakvimService, private activatedRoute: ActivatedRoute, private alertifyService: AlertifyService) {
     this.columnDefs = [
       { headerName: 'ID', field: 'idE' },
       { headerName: "kursAciklama", field: "kursAciklama" },
@@ -77,7 +77,12 @@ export class TakvimComponent implements OnInit {
   }
 
   ide: number
-  onRowClicked(event: any) { console.log('event.data.IdE', event.data.idE); let ide = event.data.idE; return ide; }
+  onRowClicked(event: any) {
+    console.log('event.data.IdE', event.data.idE);
+    let ide = event.data.idE;
+    this.alertifyService.error("on row clicked");
+    return ide;
+  }
 
   dersProgramiEkle() {
     this.alertifyService.error("ders programı eklendi");

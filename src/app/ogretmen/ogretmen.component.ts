@@ -18,12 +18,12 @@ import {
   // providers: [OgretmenService]
 })
 
-export class OgretmenComponent implements OnInit { 
+export class OgretmenComponent implements OnInit {
   subscribeERR: any = {}
   get RoleNAME() { return localStorage.getItem("RoleNAME") }
 
   private columnDefs;
-  constructor(private ogretmenService: OgretmenService, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, private alertifyService:AlertifyService) {
+  constructor(private ogretmenService: OgretmenService, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, private alertifyService: AlertifyService) {
     this.columnDefs = [
       { headerName: 'TYPE', field: 'kisitipi' },
       { headerName: 'ID', field: 'idE' },
@@ -36,9 +36,7 @@ export class OgretmenComponent implements OnInit {
       { headerName: 'TEL', field: 'telefon1', editable: true },
       // { headerName: 'ADR', field: 'adres1', editable: true },
     ];
-   }
-
-
+  }
 
   ngOnInit() {
     this.createOgretmenForm();
@@ -53,22 +51,22 @@ export class OgretmenComponent implements OnInit {
       else
         this.getOgretmenler();
     }
-    , xError => {
-      this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
-      console.log("ooops:", this.subscribeERR)
-      this.alertifyService.error(this.subscribeERR);
-    }
-)
-
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
+        console.log("ooops:", this.subscribeERR)
+        this.alertifyService.error(this.subscribeERR);
+      }
+    )
   }
 
   updateKisiID = parseInt(localStorage.getItem("IdE"));
   rowData: __Kisi[];
-  ogretmenForm: FormGroup;
-  ogretmenUpdate: any = {}
+
+  myDynFormGroup: FormGroup;
+  aPersonUpdate: any = {}
 
   setOgretmenForm() {
-    this.ogretmenForm = this.formBuilder.group(
+    this.myDynFormGroup = this.formBuilder.group(
       {
         Username: [this.rowData[0].UserName, Validators.required],
         Adi: [this.rowData[0].adi, Validators.required],
@@ -81,7 +79,7 @@ export class OgretmenComponent implements OnInit {
   }
 
   createOgretmenForm() {
-    this.ogretmenForm = this.formBuilder.group(
+    this.myDynFormGroup = this.formBuilder.group(
       {
         Username: ["", Validators.required],
         Adi: ["", Validators.required],
@@ -94,24 +92,26 @@ export class OgretmenComponent implements OnInit {
   }
 
   editOgretmen() {
-    if (this.ogretmenForm.valid) {
-      this.ogretmenUpdate = Object.assign({}, this.ogretmenForm.value)
-      console.log(this.ogretmenUpdate)
-      let ogrkisi: ogretmenUpdateDto = new ogretmenUpdateDto;
-      ogrkisi.IdE = this.updateKisiID;
-      ogrkisi.UzmanlikAlanlari = this.ogretmenForm.value.UzmanlikAlanlari;
-      ogrkisi.Username = this.ogretmenForm.value.Username;
-      ogrkisi.Adi = this.ogretmenForm.value.Adi;
-      ogrkisi.Soyadi = this.ogretmenForm.value.Soyadi;
-      ogrkisi.TCkimlik = this.ogretmenForm.value.TCkimlik;
-      ogrkisi.telefon1 = this.ogretmenForm.value.telefon1;
-      this.ogretmenService.putOgretmen(ogrkisi).subscribe(fff => { console.log(fff) }
-      , xError => {
-        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
-        console.log("ooops:", this.subscribeERR)
-        this.alertifyService.error(this.subscribeERR);
-      }
-    )
+    if (this.myDynFormGroup.valid) {
+      this.aPersonUpdate = Object.assign({}, this.myDynFormGroup.value)
+      let kisi: ogretmenUpdateDto = this.aPersonUpdate;
+      kisi.IdE = this.updateKisiID;
+      // kisi.Username = this.myDynFormGroup.value.Username;
+      // kisi.Adi = this.myDynFormGroup.value.Adi;
+      // kisi.Soyadi = this.myDynFormGroup.value.Soyadi;
+      // kisi.TCkimlik = this.myDynFormGroup.value.TCkimlik;
+      // kisi.telefon1 = this.myDynFormGroup.value.telefon1;
+      kisi.UzmanlikAlanlari = this.myDynFormGroup.value.UzmanlikAlanlari;
+      console.log("sendUpdateValues:", kisi)
+
+      this.ogretmenService.putOgretmen(kisi).subscribe(
+        OkReturn => { console.log("OkReturn:", OkReturn); this.alertifyService.success("GÜNCELLENDİ :-)"); }
+        , xError => {
+          this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
+          console.log("ooops:", this.subscribeERR)
+          this.alertifyService.error(this.subscribeERR);
+        }
+      )
     }
   }
 
@@ -121,23 +121,30 @@ export class OgretmenComponent implements OnInit {
       // console.log(this.rowData)
       this.setOgretmenForm()
     }
-    , xError => {
-      this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
-      console.log("ooops:", this.subscribeERR)
-      this.alertifyService.error(this.subscribeERR);
-    }
-)
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
+        console.log("ooops:", this.subscribeERR)
+        this.alertifyService.error(this.subscribeERR);
+      }
+    )
   }
 
-  getOgretmenler() { this.ogretmenService.getOgretmenler().subscribe(data => { this.rowData = data }
-    , xError => {
-      this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
-      console.log("ooops:", this.subscribeERR)
-      this.alertifyService.error(this.subscribeERR);
-    }
-) }
+  getOgretmenler() {
+    this.ogretmenService.getOgretmenler().subscribe(data => { this.rowData = data }
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
+        console.log("ooops:", this.subscribeERR)
+        this.alertifyService.error(this.subscribeERR);
+      }
+    )
+  }
 
   ide: number
-  onRowClicked(event: any) { console.log('event.data.IdE', event.data.idE); let ide = event.data.idE; return ide; }
+  onRowClicked(event: any) {
+    console.log('event.data.IdE', event.data.idE);
+    let ide = event.data.idE;
+    this.alertifyService.error("on row clicked");
+    return ide;
+  }
 
 }

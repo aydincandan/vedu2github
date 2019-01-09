@@ -93,11 +93,9 @@ export class AdminComponent implements OnInit {
 
   updateKisiID = parseInt(localStorage.getItem("IdE"));
   //rowData: __Kisi[];
+  
   myDynFormGroup: FormGroup;
-
-  adminUpdate: any = {}
-  ogrenciUpdate: any = {}
-  ogretmenUpdate: any = {}
+  aPersonUpdate: any = {}
 
   rowDatas1: __Kisi[];
 
@@ -179,19 +177,19 @@ export class AdminComponent implements OnInit {
   }
   editAdmin() {
     if (this.myDynFormGroup.valid) {
-      this.adminUpdate = Object.assign({}, this.myDynFormGroup.value)
-      console.log("sendUpdateValues:", this.adminUpdate)
-      let kisi: adminUpdateDto = new adminUpdateDto;
+      this.aPersonUpdate = Object.assign({}, this.myDynFormGroup.value)
+      let kisi: adminUpdateDto = this.aPersonUpdate;
       kisi.IdE = this.updateKisiID;
-      kisi.Username = this.myDynFormGroup.value.Username;
-      kisi.Adi = this.myDynFormGroup.value.Adi;
-      kisi.Soyadi = this.myDynFormGroup.value.Soyadi;
-      kisi.TCkimlik = this.myDynFormGroup.value.TCkimlik;
-      kisi.telefon1 = this.myDynFormGroup.value.telefon1;
+      // kisi.Username = this.myDynFormGroup.value.Username;
+      // kisi.Adi = this.myDynFormGroup.value.Adi;
+      // kisi.Soyadi = this.myDynFormGroup.value.Soyadi;
+      // kisi.TCkimlik = this.myDynFormGroup.value.TCkimlik;
+      // kisi.telefon1 = this.myDynFormGroup.value.telefon1;
       kisi.YetkiSeviye = this.myDynFormGroup.value.YetkiSeviye;
+      console.log("sendUpdateValues:", kisi)
 
       this.adminService.putAdmin(kisi).subscribe(
-        OkReturn => { console.log("OkReturn:", OkReturn); this.alertifyService.success("ok ok ok ok"); }
+        OkReturn => { console.log("OkReturn:", OkReturn); this.alertifyService.success("GÜNCELLENDİ :-)"); }
         , xError => {
           this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
           console.log("ooops:", this.subscribeERR)
@@ -202,19 +200,19 @@ export class AdminComponent implements OnInit {
   }
   editOgrenci() {
     if (this.myDynFormGroup.valid) {
-      this.ogrenciUpdate = Object.assign({}, this.myDynFormGroup.value)
-      console.log("sendUpdateValues:", this.ogrenciUpdate)
-      let kisi: ogrenciUpdateDto = new ogrenciUpdateDto;
+      this.aPersonUpdate = Object.assign({}, this.myDynFormGroup.value)
+      let kisi: ogrenciUpdateDto = this.aPersonUpdate;
       kisi.IdE = this.updateKisiID;
-      kisi.Username = this.myDynFormGroup.value.Username;
-      kisi.Adi = this.myDynFormGroup.value.Adi;
-      kisi.Soyadi = this.myDynFormGroup.value.Soyadi;
-      kisi.TCkimlik = this.myDynFormGroup.value.TCkimlik;
-      kisi.telefon1 = this.myDynFormGroup.value.telefon1;
+      // kisi.Username = this.myDynFormGroup.value.Username;
+      // kisi.Adi = this.myDynFormGroup.value.Adi;
+      // kisi.Soyadi = this.myDynFormGroup.value.Soyadi;
+      // kisi.TCkimlik = this.myDynFormGroup.value.TCkimlik;
+      // kisi.telefon1 = this.myDynFormGroup.value.telefon1;
       kisi.IlgiAlanlari = this.myDynFormGroup.value.IlgiAlanlari;
+      console.log("sendUpdateValues:", kisi)
 
       this.ogrenciService.putOgrenci(kisi).subscribe(
-        OkReturn => { console.log("OkReturn:", OkReturn); this.alertifyService.success("ok ok ok ok"); }
+        OkReturn => { console.log("OkReturn:", OkReturn); this.alertifyService.success("GÜNCELLENDİ :-)"); }
         , xError => {
           this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
           console.log("ooops:", this.subscribeERR)
@@ -225,19 +223,19 @@ export class AdminComponent implements OnInit {
   }
   editOgretmen() {
     if (this.myDynFormGroup.valid) {
-      this.ogretmenUpdate = Object.assign({}, this.myDynFormGroup.value)
-      console.log("sendUpdateValues:", this.ogretmenUpdate)
-      let kisi: ogretmenUpdateDto = new ogretmenUpdateDto;
+      this.aPersonUpdate = Object.assign({}, this.myDynFormGroup.value)
+      let kisi: ogretmenUpdateDto = this.aPersonUpdate;
       kisi.IdE = this.updateKisiID;
-      kisi.Username = this.myDynFormGroup.value.Username;
-      kisi.Adi = this.myDynFormGroup.value.Adi;
-      kisi.Soyadi = this.myDynFormGroup.value.Soyadi;
-      kisi.TCkimlik = this.myDynFormGroup.value.TCkimlik;
-      kisi.telefon1 = this.myDynFormGroup.value.telefon1;
+      // kisi.Username = this.myDynFormGroup.value.Username;
+      // kisi.Adi = this.myDynFormGroup.value.Adi;
+      // kisi.Soyadi = this.myDynFormGroup.value.Soyadi;
+      // kisi.TCkimlik = this.myDynFormGroup.value.TCkimlik;
+      // kisi.telefon1 = this.myDynFormGroup.value.telefon1;
       kisi.UzmanlikAlanlari = this.myDynFormGroup.value.UzmanlikAlanlari;
+      console.log("sendUpdateValues:", kisi)
 
       this.ogretmenService.putOgretmen(kisi).subscribe(
-        OkReturn => { console.log("OkReturn:", OkReturn); this.alertifyService.success("ok ok ok ok"); }
+        OkReturn => { console.log("OkReturn:", OkReturn); this.alertifyService.success("GÜNCELLENDİ :-)"); }
         , xError => {
           this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
           console.log("ooops:", this.subscribeERR)
@@ -315,6 +313,7 @@ export class AdminComponent implements OnInit {
   formTitle: string = 'Sabit Bilgileri'
   buttonText: string = 'Tamam'
   roleOzelAlan: FormControl
+  
   ide: number
   onRowClicked(event: any) {
     console.log('event.data.IdE', event.data.idE);

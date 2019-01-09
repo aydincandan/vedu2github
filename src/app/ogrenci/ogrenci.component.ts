@@ -18,12 +18,12 @@ import {
   // providers: [OgrenciService]
 })
 
-export class OgrenciComponent implements OnInit { 
+export class OgrenciComponent implements OnInit {
   subscribeERR: any = {}
   get RoleNAME() { return localStorage.getItem("RoleNAME") }
 
   private columnDefs;
-  constructor(private ogrenciService: OgrenciService, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, private alertifyService:AlertifyService) {
+  constructor(private ogrenciService: OgrenciService, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, private alertifyService: AlertifyService) {
     this.columnDefs = [
       { headerName: 'TYPE', field: 'kisitipi' },
       { headerName: 'ID', field: 'idE' },
@@ -36,7 +36,7 @@ export class OgrenciComponent implements OnInit {
       { headerName: 'TEL', field: 'telefon1', editable: true },
       // { headerName: 'ADR', field: 'adres1', editable: true },
     ];
-   }
+  }
 
   ngOnInit() {
     this.createOgrenciForm();
@@ -51,21 +51,22 @@ export class OgrenciComponent implements OnInit {
       else
         this.getOgrenciler();
     }
-    , xError => {
-      this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
-      console.log("ooops:", this.subscribeERR)
-      this.alertifyService.error(this.subscribeERR);
-    }
-)
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
+        console.log("ooops:", this.subscribeERR)
+        this.alertifyService.error(this.subscribeERR);
+      }
+    )
   }
 
   updateKisiID = parseInt(localStorage.getItem("IdE"));
   rowData: __Kisi[];
-  ogrenciForm: FormGroup;
-  ogrenciUpdate: any = {}
+  
+  myDynFormGroup: FormGroup;
+  aPersonUpdate: any = {}
 
   setOgrenciForm() {
-    this.ogrenciForm = this.formBuilder.group(
+    this.myDynFormGroup = this.formBuilder.group(
       {
         Username: [this.rowData[0].UserName, Validators.required],
         Adi: [this.rowData[0].adi, Validators.required],
@@ -78,7 +79,7 @@ export class OgrenciComponent implements OnInit {
   }
 
   createOgrenciForm() {
-    this.ogrenciForm = this.formBuilder.group(
+    this.myDynFormGroup = this.formBuilder.group(
       {
         Username: ["", Validators.required],
         Adi: ["", Validators.required],
@@ -91,24 +92,26 @@ export class OgrenciComponent implements OnInit {
   }
 
   editOgrenci() {
-    if (this.ogrenciForm.valid) {
-      this.ogrenciUpdate = Object.assign({}, this.ogrenciForm.value)
-      console.log(this.ogrenciUpdate)
-      let ogrkisi: ogrenciUpdateDto = new ogrenciUpdateDto;
-      ogrkisi.IdE = this.updateKisiID;
-      ogrkisi.IlgiAlanlari = this.ogrenciForm.value.IlgiAlanlari;
-      ogrkisi.Username = this.ogrenciForm.value.Username;
-      ogrkisi.Adi = this.ogrenciForm.value.Adi;
-      ogrkisi.Soyadi = this.ogrenciForm.value.Soyadi;
-      ogrkisi.TCkimlik = this.ogrenciForm.value.TCkimlik;
-      ogrkisi.telefon1 = this.ogrenciForm.value.telefon1;
-      this.ogrenciService.putOgrenci(ogrkisi).subscribe(fff => { console.log(fff) }
-      , xError => {
-        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
-        console.log("ooops:", this.subscribeERR)
-        this.alertifyService.error(this.subscribeERR);
-      }
-    )
+    if (this.myDynFormGroup.valid) {
+      this.aPersonUpdate = Object.assign({}, this.myDynFormGroup.value)
+      let kisi: ogrenciUpdateDto = this.aPersonUpdate;
+      kisi.IdE = this.updateKisiID;
+      // kisi.Username = this.myDynFormGroup.value.Username;
+      // kisi.Adi = this.myDynFormGroup.value.Adi;
+      // kisi.Soyadi = this.myDynFormGroup.value.Soyadi;
+      // kisi.TCkimlik = this.myDynFormGroup.value.TCkimlik;
+      // kisi.telefon1 = this.myDynFormGroup.value.telefon1;
+      kisi.IlgiAlanlari = this.myDynFormGroup.value.IlgiAlanlari;
+      console.log("sendUpdateValues:", kisi)
+
+      this.ogrenciService.putOgrenci(kisi).subscribe(
+        OkReturn => { console.log("OkReturn:", OkReturn); this.alertifyService.success("GÜNCELLENDİ :-)"); }
+        , xError => {
+          this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
+          console.log("ooops:", this.subscribeERR)
+          this.alertifyService.error(this.subscribeERR);
+        }
+      )
     }
   }
 
@@ -118,23 +121,30 @@ export class OgrenciComponent implements OnInit {
       // console.log(this.rowData)
       this.setOgrenciForm()
     }
-    , xError => {
-      this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
-      console.log("ooops:", this.subscribeERR)
-      this.alertifyService.error(this.subscribeERR);
-    }
-)
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
+        console.log("ooops:", this.subscribeERR)
+        this.alertifyService.error(this.subscribeERR);
+      }
+    )
   }
 
-  getOgrenciler() { this.ogrenciService.getOgrenciler().subscribe(data => { this.rowData = data }
-    , xError => {
-      this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
-      console.log("ooops:", this.subscribeERR)
-      this.alertifyService.error(this.subscribeERR);
-    }
-) }
+  getOgrenciler() {
+    this.ogrenciService.getOgrenciler().subscribe(data => { this.rowData = data }
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
+        console.log("ooops:", this.subscribeERR)
+        this.alertifyService.error(this.subscribeERR);
+      }
+    )
+  }
 
   ide: number
-  onRowClicked(event: any) { console.log('event.data.IdE', event.data.idE); let ide = event.data.idE; return ide; }
+  onRowClicked(event: any) {
+    console.log('event.data.IdE', event.data.idE);
+    let ide = event.data.idE;
+    this.alertifyService.error("on row clicked");
+    return ide;
+  }
 
 }

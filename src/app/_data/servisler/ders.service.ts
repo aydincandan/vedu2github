@@ -27,12 +27,12 @@ export class DersService {
     return this.httpClient.get<__Ders[]>(istek)
   }
 
-  addDers(data: __Ders) {
+  addDers(data: any): void {
     let istek: string = environment.api_url + '/dersler/add'
     this.httpClient.post(istek, data).subscribe(data => {
       this.alertifyService.success("Ders (ID : " + data["ID"] + ") başarıyla eklendi.")
       console.log("istek : " + istek)
-      this.router.navigateByUrl('/dersDetay/' + data["ID"])
+      // this.router.navigateByUrl('/dersDetay/' + data["ID"])
     }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
@@ -40,5 +40,7 @@ export class DersService {
         this.alertifyService.error(this.subscribeERR);
       }
     );
+
+    //return
   }
 }

@@ -3,6 +3,13 @@ import { __Ders } from '../_data/modeller/hepsi.model';
 import { DersService } from "../_data/servisler/ders.service";
 import { ActivatedRoute } from '@angular/router';
 import { AlertifyService } from '../_data/servisler/alertify.service';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormControl,
+  FormArray
+} from '@angular/forms';
 
 @Component({
   selector: 'app-ders',
@@ -84,8 +91,29 @@ export class DersComponent implements OnInit {
     return ide;
   }
 
+  myDynFormGroup: FormGroup;
+  aPersonUpdate: any = {}
+
+  dersNewData: any = {}
   dersEkle() {
-    this.alertifyService.error("ders eklendi");
+
+    this.myDynFormGroup=new FormGroup({
+      title: new FormControl("xcvbxcvb 6666 title12 hdfgh"),
+      ID: new FormControl("123")
+    });
+
+    if (this.myDynFormGroup.valid) {
+
+      let DERS: any = Object.assign({}, this.myDynFormGroup.value);
+
+      console.log("sendUpdateValues:", DERS)
+
+      this.dersService.addDers(DERS)
+    }
+  }
+  dersSil() {
+
+    this.alertifyService.error("ders silindi");
 
   }
 }
