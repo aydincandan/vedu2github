@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from "../_data/servisler/auth.service";
+import { AlertifyService } from '../_data/servisler/alertify.service';
 import {
   FormBuilder,
   FormGroup,
@@ -18,7 +19,7 @@ export class RegisterComponent implements OnInit {
   subscribeERR: any = {}
   showADMopt: boolean = true
 
-  constructor(private authService: AuthService, private formBuilder: FormBuilder, private activatedRoute: ActivatedRoute) {
+  constructor(private authService: AuthService, private formBuilder: FormBuilder, private activatedRoute: ActivatedRoute, private alertifyService:AlertifyService) {
 
     this.activatedRoute.queryParams.subscribe(params => {
       this.showADMopt = params['showADMopt'];

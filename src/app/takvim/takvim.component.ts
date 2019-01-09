@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { __Takvim } from '../_data/modeller/hepsi.model';
 import { TakvimService } from "../_data/servisler/takvim.service";
 import { ActivatedRoute } from '@angular/router';
+import { AlertifyService } from '../_data/servisler/alertify.service';
 
 @Component({
   selector: 'app-takvim',
@@ -15,7 +16,7 @@ export class TakvimComponent implements OnInit {
 
   public columnDefs: any;
 
-  constructor(private takvimService: TakvimService, private activatedRoute: ActivatedRoute) {
+  constructor(private takvimService: TakvimService, private activatedRoute: ActivatedRoute, private alertifyService:AlertifyService) {
     this.columnDefs = [
       { headerName: 'ID', field: 'idE' },
       { headerName: "kursAciklama", field: "kursAciklama" },
