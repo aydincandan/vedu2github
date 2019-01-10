@@ -41,4 +41,11 @@ export class TakvimService {
       }
     );
   }
+
+  delTakvim(Id: number): Observable<__Takvim[]> {
+    let istek: string = environment.api_url + "/takvimler/delete/" + Id;
+    console.log("istek : " + istek)
+    return this.httpClient.delete<__Takvim[]>(istek)
+  }
+
 }

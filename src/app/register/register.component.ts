@@ -61,6 +61,8 @@ export class RegisterComponent implements OnInit {
     if (this.registerForm.valid) {
       this.registerUser = Object.assign({}, this.registerForm.value)
       this.authService.KisiRegister(this.registerUser)
+      // kişi conflict ile karşılaşırsa (15 saniye gibi bir süre içerisinde güvenlik içinmi buna gerek var) login le birlikte kendini içeride bulsun !
+      
     }
   }
 }

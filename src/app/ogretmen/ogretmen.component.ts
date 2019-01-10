@@ -18,11 +18,18 @@ import {
   // providers: [OgretmenService]
 })
 
+
+
 export class OgretmenComponent implements OnInit {
   subscribeERR: any = {}
   get RoleNAME() { return localStorage.getItem("RoleNAME") }
+  private gridApi;
+  private gridColumnApi;
+  public columnDefs: any;
+  private rowDatas1 = [];
+  public rowSelection: any;
+  private rowData: any[];
 
-  private columnDefs;
   constructor(private ogretmenService: OgretmenService, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, private alertifyService: AlertifyService) {
     this.columnDefs = [
       { headerName: 'TYPE', field: 'kisitipi' },
@@ -36,12 +43,15 @@ export class OgretmenComponent implements OnInit {
       { headerName: 'TEL', field: 'telefon1', editable: true },
       // { headerName: 'ADR', field: 'adres1', editable: true },
     ];
+
+    this.rowSelection = "multiple";
+
   }
 
   ngOnInit() {
-    this.createOgretmenForm();
+    this.createmyDynFormGroup();
     this.getOgretmen(this.updateKisiID);
-    console.log(this.rowData)
+    console.log("this.rowData : ", this.rowData)
 
     this.activatedRoute.params.subscribe(params => {
       let xx: number = params["ID"]
@@ -60,12 +70,11 @@ export class OgretmenComponent implements OnInit {
   }
 
   updateKisiID = parseInt(localStorage.getItem("IdE"));
-  rowData: __Kisi[];
-
+  
   myDynFormGroup: FormGroup;
   aPersonUpdate: any = {}
 
-  setOgretmenForm() {
+  setmyDynFormGroup() {
     this.myDynFormGroup = this.formBuilder.group(
       {
         Username: [this.rowData[0].UserName, Validators.required],
@@ -78,7 +87,7 @@ export class OgretmenComponent implements OnInit {
     )
   }
 
-  createOgretmenForm() {
+  createmyDynFormGroup() {
     this.myDynFormGroup = this.formBuilder.group(
       {
         Username: ["", Validators.required],
@@ -119,7 +128,7 @@ export class OgretmenComponent implements OnInit {
     this.ogretmenService.getOgretmen(xx).subscribe(data => {
       this.rowData = data;
       // console.log(this.rowData)
-      this.setOgretmenForm()
+      this.setmyDynFormGroup()
     }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
@@ -130,7 +139,7 @@ export class OgretmenComponent implements OnInit {
   }
 
   getOgretmenler() {
-    this.ogretmenService.getOgretmenler().subscribe(data => { this.rowData = data }
+    this.ogretmenService.getOgretmenler().subscribe(data => { this.rowDatas1 = data }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
@@ -145,6 +154,12 @@ export class OgretmenComponent implements OnInit {
     let ide = event.data.idE;
     this.alertifyService.error("on row clicked");
     return ide;
+  }
+
+  onGridReady(event: any) {
+    this.gridApi = event.api;
+    this.gridColumnApi = event.columnApi;
+    this.alertifyService.error("onGridReady");
   }
 
 }

@@ -20,19 +20,24 @@ import {
 export class DersComponent implements OnInit {
   subscribeERR: any = {}
   get RoleNAME() { return localStorage.getItem("RoleNAME") }
-
+  private gridApi;
+  private gridColumnApi;
   public columnDefs: any;
+  rowDatas1 = [];
+  public rowSelection: any;
 
   constructor(private dersService: DersService, private activatedRoute: ActivatedRoute, private alertifyService: AlertifyService) {
     this.columnDefs = [
       { headerName: 'ID', field: 'idE' },
-      { headerName: 'TITLE', field: 'title' },
+      { headerName: 'TITLE', field: 'title', editable:true },
       { headerName: 'dersDetaylar', field: 'dersDetaylar' },
       { headerName: 'kisininDersleri', field: 'kisininDersleri' },
     ];
+
+    this.rowSelection = "multiple";
+
   }
 
-  rowDatas1 = [];
   fillAgGrid1() {
     this.dersService.getDersler().subscribe(data => { this.rowDatas1 = data }
       , xError => {
@@ -87,7 +92,6 @@ export class DersComponent implements OnInit {
   onRowClicked(event: any) {
     console.log('event.data.IdE', event.data.idE);
     let ide = event.data.idE;
-    this.alertifyService.error("on row clicked");
     return ide;
   }
 
@@ -95,10 +99,23 @@ export class DersComponent implements OnInit {
   aPersonUpdate: any = {}
 
   dersNewData: any = {}
-  dersEkle() {
-
+  YeniDersGir() {
+    this.onAddRow();
+  }
+  YeniDersiEkle() {
+    var rowData = [];
+    this.gridApi.forEachNode(function(node) {
+      rowData.push(node.data);
+    });
+    console.log("-----------Row Data:------------");
+    console.log(rowData);
+    for (let index = 0; index < rowData.length; index++) {
+      if(rowData[index].idE==undefined)console.log(rowData[index]);
+    }
+    return;
+    
     this.myDynFormGroup=new FormGroup({
-      title: new FormControl("xcvbxcvb 6666 title12 hdfgh"),
+      title: new FormControl("gggggg yy"),
       ID: new FormControl("123")
     });
 
@@ -111,9 +128,70 @@ export class DersComponent implements OnInit {
       this.dersService.addDers(DERS)
     }
   }
-  dersSil() {
+  clearData() {this.gridApi.setRowData([]);}
 
-    this.alertifyService.error("ders silindi");
+  onAddRow() {
+    
+    var newItem = createNewRowData();
+    var res = this.gridApi.updateRowData({ add: [newItem] });
+    printResult(res);
+
+    function createNewRowData() {
+      var newData = {
+        idE: undefined, // bilemeyiz
+        title: "Yeni bir Ders giriniz..",
+        dersDetaylar: [],
+        kisininDersleri: []
+      };
+      return newData;
+    }
+    function printResult(res) {
+      console.log("---------------------------------------");
+      if (res.add) {
+        res.add.forEach(function(rowNode) {
+          console.log("Added Row Node", rowNode);
+        });
+      }
+      if (res.remove) {
+        res.remove.forEach(function(rowNode) {
+          console.log("Removed Row Node", rowNode);
+        });
+      }
+      if (res.update) {
+        res.update.forEach(function(rowNode) {
+          console.log("Updated Row Node", rowNode);
+        });
+      }
+    }
 
   }
+  
+  onGridReady(event: any) {
+    this.gridApi = event.api;
+    this.gridColumnApi = event.columnApi;
+  }
+
+  removeSelected() {
+    var selectedData = this.gridApi.getSelectedRows();
+
+    for (var i in selectedData) {
+      console.log(i + ' = ' + selectedData[i].idE);
+      this.delDers(selectedData[i].idE);
+    }
+
+    var res = this.gridApi.updateRowData({ remove: selectedData });
+    console.log("res", res);
+  }
+  delDers(aydi: number) {
+    this.dersService.delDers(aydi).subscribe(data => {
+      this.alertifyService.success(aydi + " silindi.");
+    }
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
+        console.log("ooops:", this.subscribeERR)
+        this.alertifyService.error(this.subscribeERR);
+      }
+    )
+  }
+
 }

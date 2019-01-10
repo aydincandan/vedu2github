@@ -3,6 +3,13 @@ import { __Takvim } from '../_data/modeller/hepsi.model';
 import { TakvimService } from "../_data/servisler/takvim.service";
 import { ActivatedRoute } from '@angular/router';
 import { AlertifyService } from '../_data/servisler/alertify.service';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormControl,
+  FormArray
+} from '@angular/forms';
 
 @Component({
   selector: 'app-takvim',
@@ -13,8 +20,11 @@ import { AlertifyService } from '../_data/servisler/alertify.service';
 export class TakvimComponent implements OnInit {
   subscribeERR: any = {}
   get RoleNAME() { return localStorage.getItem("RoleNAME") }
-
+  private gridApi;
+  private gridColumnApi;
   public columnDefs: any;
+  rowDatas1 = [];
+  public rowSelection: any;
 
   constructor(private takvimService: TakvimService, private activatedRoute: ActivatedRoute, private alertifyService: AlertifyService) {
     this.columnDefs = [
@@ -23,10 +33,11 @@ export class TakvimComponent implements OnInit {
       { headerName: "kursZamani", field: "kursZamani" },
       { headerName: "dersDetaylarIdE", field: "dersDetaylarIdE" },
     ];
+
+    this.rowSelection = "multiple";
+
   }
 
-
-  rowDatas1 = [];
   fillAgGrid1() {
     this.takvimService.getTakvimler().subscribe(data => { this.rowDatas1 = data }
       , xError => {
@@ -57,6 +68,7 @@ export class TakvimComponent implements OnInit {
   }
 
   takvimler: __Takvim[]
+
   getTakvim(xx: number) {
     this.takvimService.getTakvim(xx).subscribe(data => { this.takvimler = data }
       , xError => {
@@ -84,9 +96,53 @@ export class TakvimComponent implements OnInit {
     return ide;
   }
 
-  dersProgramiEkle() {
-    this.alertifyService.error("ders programı eklendi");
+  myDynFormGroup: FormGroup;
+  aPersonUpdate: any = {}
 
+  takvimNewData: any = {}
+  takvimEkle() {
+
+    this.myDynFormGroup=new FormGroup({
+      title: new FormControl("takvim afafadsf"),
+      zaman: new FormControl("123")
+    });
+
+    if (this.myDynFormGroup.valid) {
+
+      let TAKVIM: any = Object.assign({}, this.myDynFormGroup.value);
+
+      console.log("sendUpdateValues:", TAKVIM)
+
+      this.takvimService.addTakvim(TAKVIM)
+    }
+  }
+
+  onGridReady(event: any) {
+    this.gridApi = event.api;
+    this.gridColumnApi = event.columnApi;
+  }
+
+  removeSelected() {
+    var selectedData = this.gridApi.getSelectedRows();
+
+    for (var i in selectedData) {
+      console.log(i + ' = ' + selectedData[i].idE);
+      this.delDers(selectedData[i].idE);
+    }
+
+    var res = this.gridApi.updateRowData({ remove: selectedData });
+    console.log("res", res);
+  }
+  delDers(aydi: number) {
+    this.takvimService.delTakvim(aydi).subscribe(data => {
+      this.alertifyService.success(aydi + " silindi.");
+    }
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
+        console.log("ooops:", this.subscribeERR)
+        this.alertifyService.error(this.subscribeERR);
+      }
+    )
   }
 
 }

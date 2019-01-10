@@ -40,7 +40,12 @@ export class DersService {
         this.alertifyService.error(this.subscribeERR);
       }
     );
-
-    //return
   }
+
+  delDers(Id: number): Observable<__Ders[]> {
+    let istek: string = environment.api_url + "/dersler/delete/" + Id;
+    console.log("istek : " + istek)
+    return this.httpClient.delete<__Ders[]>(istek)
+  }
+
 }

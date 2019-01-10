@@ -1,14 +1,9 @@
-// ***
 import { Component, OnInit } from '@angular/core';
-
-import { __Kisi, adminUpdateDto, ogrenciUpdateDto, ogretmenUpdateDto }
-  from '../_data/modeller/hepsi.model';
-
+import { __Kisi, adminUpdateDto, ogrenciUpdateDto, ogretmenUpdateDto } from '../_data/modeller/hepsi.model';
 import { AuthService } from "../_data/servisler/auth.service";
 import { AdminService } from "../_data/servisler/admin.service";
 import { OgrenciService } from "../_data/servisler/ogrenci.service";
 import { OgretmenService } from "../_data/servisler/ogretmen.service";
-
 import { AlertifyService } from '../_data/servisler/alertify.service';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -26,19 +21,20 @@ import {
   // olmasa oluyor mu? providers: [AuthService, AdminService, OgrenciService, OgretmenService, AlertifyService] // gerek var mı?
 })
 export class AdminComponent implements OnInit {
-
-  dynrol: string
-
   subscribeERR: any = {}
-
   get RoleNAME() { return localStorage.getItem("RoleNAME") }
-
   private gridApi;
+  private gridColumnApi;
+  public columnDefs: any;
+  private rowDatas1 = [];
+  public rowSelection: any;
   private rowData: any[];
 
-  public columnDefs: any;
-  public rowSelection: any;
-  private gridColumnApi;
+  updateKisiID = parseInt(localStorage.getItem("IdE"));
+  myDynFormGroup: FormGroup;
+  aPersonUpdate: any = {}
+
+  dynrol: string
 
   constructor(private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, private alertifyService: AlertifyService
     , private authService: AuthService
@@ -78,10 +74,6 @@ export class AdminComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       let xx: number = params["ID"]
       console.log("param : " + xx)
-      if (xx)
-        this.getAdminToSetForm(xx);
-      else
-        this.getKisiler();
     }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
@@ -90,14 +82,6 @@ export class AdminComponent implements OnInit {
       }
     )
   }
-
-  updateKisiID = parseInt(localStorage.getItem("IdE"));
-  //rowData: __Kisi[];
-  
-  myDynFormGroup: FormGroup;
-  aPersonUpdate: any = {}
-
-  rowDatas1: __Kisi[];
 
   fillAgGrid1() {
     this.authService.getKisiler().subscribe(data => { this.rowDatas1 = data }
@@ -288,18 +272,9 @@ export class AdminComponent implements OnInit {
     )
   }
 
-  getKisiler() {
-    this.adminService.getAdminler().subscribe(data => { this.rowData = data }
-      , xError => {
-        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
-        console.log("ooops:", this.subscribeERR)
-        this.alertifyService.error(this.subscribeERR);
-      }
-    )
-  }
   delKisi(aydi: number) {
     this.authService.delKisi(aydi).subscribe(data => {
-      this.rowData = data;
+      //this.rowData = data;
       this.alertifyService.success(aydi + " silindi.");
     }
       , xError => {
@@ -360,6 +335,7 @@ export class AdminComponent implements OnInit {
   onGridReady(event: any) {
     this.gridApi = event.api;
     this.gridColumnApi = event.columnApi;
+    this.alertifyService.error("onGridReady");
   }
 
   removeSelected() {
