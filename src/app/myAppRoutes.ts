@@ -13,12 +13,12 @@ export const myAppRoutes: Routes = [
     { path: "siltest", component: SiltestComponent },
 
     { path: "ogrenci", component: OgrenciComponent },
-    { path: "ogrenci/:iD", component: OgrenciComponent },
-    { path: "ogrenci/d/:iD", component: OgrenciComponent },
-    { path: "ogrenci/detail/:iD", component: OgrenciComponent },
-    { path: "ogrenci/add", component: OgrenciComponent },
-    { path: "ogrenci/edit/:iD", component: OgrenciComponent },
-    { path: "ogrenci/delete/:iD", component: OgrenciComponent },
+    // { path: "ogrenci/:iD", component: OgrenciComponent },
+    // { path: "ogrenci/d/:iD", component: OgrenciComponent },
+    // { path: "ogrenci/detail/:iD", component: OgrenciComponent },
+    // { path: "ogrenci/add", component: OgrenciComponent },
+    // { path: "ogrenci/edit/:iD", component: OgrenciComponent },
+    // { path: "ogrenci/delete/:iD", component: OgrenciComponent },
     
     { path: "ogretmen", component: OgretmenComponent },
     
@@ -29,6 +29,8 @@ export const myAppRoutes: Routes = [
     { path: "admin", component: AdminComponent },
 
     { path: "register", component: RegisterComponent },
+    { path: "register/newadmin", component: RegisterComponent },
+
     { path: "welcome", component: WelcomeComponent },
 
     { path: "**", redirectTo: "welcome", pathMatch: "full" }, // bu en altta olacak!

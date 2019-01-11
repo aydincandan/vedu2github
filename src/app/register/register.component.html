@@ -19,21 +19,21 @@
       <div class="input-group input-group-sm mb-3">
         <div class="input-group-prepend"><span class="input-group-text">email</span></div>
         <input type="text" id="email" name="email" formControlName="email" class="form-control" placeholder="giriniz">
-        <span class="help-block" *ngIf="registerForm.get('email').hasError('required') && registerForm.get('email').touched">email gerekli</span>
+        <span class="help-block" *ngIf="registerForm.get('email').hasError('required') && registerForm.get('email').touched">Email gerekli</span>
       </div>
   
       <div class="input-group input-group-sm mb-3">
         <div class="input-group-prepend"><span class="input-group-text">şifre</span></div>
         <input type="password" id="password" name="password" formControlName="password" class="form-control" placeholder="giriniz">
         <span class="help-block" *ngIf="registerForm.get('password').hasError('required') && registerForm.get('password').touched">Şifre gerekli</span>
-        <span class="help-block" *ngIf="registerForm.get('password').hasError('minlength') && registerForm.get('password').touched">Şifre en az 4 karakter olmalıdır</span>
-        <span class="help-block" *ngIf="registerForm.get('password').hasError('maxlength') && registerForm.get('password').touched">Şifre 18 karakteri geçemez</span>
+        <span class="help-block" *ngIf="registerForm.get('password').hasError('minlength') && registerForm.get('password').touched">En az 4 karakter olmalıdır</span>
+        <span class="help-block" *ngIf="registerForm.get('password').hasError('maxlength') && registerForm.get('password').touched">18 karakteri geçemez</span>
       </div>
   
       <div class="input-group input-group-sm mb-3">
         <div class="input-group-prepend"><span class="input-group-text">şifre</span></div>
         <input type="password" id="confirmPassword" name="confirmPassword" formControlName="confirmPassword" class="form-control" placeholder="tekrar">
-        <span class="help-block" *ngIf="registerForm.get('confirmPassword').hasError('required') && registerForm.get('confirmPassword').touched">Şifre tekrarı gerekli</span>
+        <span class="help-block" *ngIf="registerForm.get('confirmPassword').hasError('required') && registerForm.get('confirmPassword').touched">Tekrarı gerekli</span>
         <span class="help-block" *ngIf="registerForm.get('confirmPassword').touched && registerForm.hasError('mismatch')">Şifreler uyumsuz</span>
       </div>
   

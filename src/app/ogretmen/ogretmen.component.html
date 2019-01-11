@@ -4,7 +4,7 @@
   </h3>
 
   <div style="height: 300px;">
-    <ag-grid-angular style="width: 100%; height: 100%;" class="ag-theme-balham" [enableColResize]="true" [enableSorting]="true" [enableFilter]="true" [pagination]="true" [rowData]="rowDatas1" [columnDefs]="columnDefs" (rowClicked)='onRowClicked($event)' (gridReady)="onGridReady($event)" [rowSelection]="rowSelection" [paginationPageSize]=8>
+    <ag-grid-angular style="width: 100%; height: 100%;" class="ag-theme-balham" [enableColResize]="true" [enableSorting]="true" [enableFilter]="true" [pagination]="true" [rowData]="rowDatas1" [columnDefs]="columnDefs" (rowClicked)='onRowClicked($event)' (gridReady)="onGridReady($event)" [rowSelection]="rowSelection" [paginationPageSize]=8 [overlayLoadingTemplate]="overlayLoadingTemplate">
     </ag-grid-angular>
   </div>
 </div>
@@ -31,18 +31,14 @@
       <div class="input-group input-group-sm mb-3">
         <div class="input-group-prepend"><span class="input-group-text">TC Kimlik</span></div>
         <input type="text" id="TCkimlik" name="TCkimlik" class="form-control" formControlName="TCkimlik">
-        <span class="help-block" *ngIf="myDynFormGroup.get('TCkimlik').hasError('minlength') && myDynFormGroup.get('TCkimlik').touched">TCkimlik
-          en az 11 karakter olmalıdır</span>
-        <span class="help-block" *ngIf="myDynFormGroup.get('TCkimlik').hasError('maxlength') && myDynFormGroup.get('TCkimlik').touched">TCkimlik
-          11 karakteri geçemez</span>
+        <span class="help-block" *ngIf="myDynFormGroup.get('TCkimlik').hasError('minlength') && myDynFormGroup.get('TCkimlik').touched">En az 11 karakter olmalı</span>
+        <span class="help-block" *ngIf="myDynFormGroup.get('TCkimlik').hasError('maxlength') && myDynFormGroup.get('TCkimlik').touched">11 karakteri geçemez</span>
       </div>
       <div class="input-group input-group-sm mb-3">
         <div class="input-group-prepend"><span class="input-group-text">Telefon</span></div>
         <input type="text" id="telefon1" name="telefon1" class="form-control" formControlName="telefon1">
-        <span class="help-block" *ngIf="myDynFormGroup.get('telefon1').hasError('minlength') && myDynFormGroup.get('telefon1').touched">Telefon
-          en az 10 karakter olmalıdır</span>
-        <span class="help-block" *ngIf="myDynFormGroup.get('telefon1').hasError('maxlength') && myDynFormGroup.get('telefon1').touched">Telefon
-          10 karakteri geçemez</span>
+        <span class="help-block" *ngIf="myDynFormGroup.get('telefon1').hasError('minlength') && myDynFormGroup.get('telefon1').touched">En az 10 karakter olmalı</span>
+        <span class="help-block" *ngIf="myDynFormGroup.get('telefon1').hasError('maxlength') && myDynFormGroup.get('telefon1').touched">10 karakteri geçemez</span>
       </div>
       <div class="input-group input-group-sm mb-3">
         <div class="input-group-prepend"><span class="input-group-text">Uzmanlık</span></div>

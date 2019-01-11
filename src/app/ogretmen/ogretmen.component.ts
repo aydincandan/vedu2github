@@ -25,6 +25,7 @@ export class OgretmenComponent implements OnInit {
   get RoleNAME() { return localStorage.getItem("RoleNAME") }
   private gridApi;
   private gridColumnApi;
+  private overlayLoadingTemplate;
   public columnDefs: any;
   private rowDatas1 = [];
   public rowSelection: any;
@@ -45,10 +46,11 @@ export class OgretmenComponent implements OnInit {
     ];
 
     this.rowSelection = "multiple";
-
+    this.overlayLoadingTemplate = '<span class="ag-overlay-loading-center">Please wait while your rows are loading</span>';
   }
 
   ngOnInit() {
+    this.fillAgGrid1()
     this.createmyDynFormGroup();
     this.getOgretmen(this.updateKisiID);
     console.log("this.rowData : ", this.rowData)
@@ -61,6 +63,16 @@ export class OgretmenComponent implements OnInit {
       // else
       //   this.getOgretmenler();
     }
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
+        console.log("ooops:", this.subscribeERR)
+        this.alertifyService.error(this.subscribeERR);
+      }
+    )
+  }
+
+  fillAgGrid1() {
+    this.ogretmenService.getOgretmenler().subscribe(data => { this.rowDatas1 = data; setTimeout(() => {this.gridApi.hideOverlay();}, 600); }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
@@ -138,16 +150,6 @@ export class OgretmenComponent implements OnInit {
     )
   }
 
-  getOgretmenler() {
-    this.ogretmenService.getOgretmenler().subscribe(data => { this.rowDatas1 = data }
-      , xError => {
-        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
-        console.log("ooops:", this.subscribeERR)
-        this.alertifyService.error(this.subscribeERR);
-      }
-    )
-  }
-
   ide: number
   onRowClicked(event: any) {
     console.log('event.data.IdE', event.data.idE);
@@ -159,7 +161,8 @@ export class OgretmenComponent implements OnInit {
   onGridReady(event: any) {
     this.gridApi = event.api;
     this.gridColumnApi = event.columnApi;
-    this.alertifyService.error("onGridReady");
+    this.gridApi.showLoadingOverlay();
+    // this.alertifyService.error("onGridReady");
     this.gridApi.sizeColumnsToFit();
   }
 

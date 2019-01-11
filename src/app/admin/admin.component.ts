@@ -25,6 +25,7 @@ export class AdminComponent implements OnInit {
   get RoleNAME() { return localStorage.getItem("RoleNAME") }
   private gridApi;
   private gridColumnApi;
+  private overlayLoadingTemplate;
   public columnDefs: any;
   private rowDatas1 = [];
   public rowSelection: any;
@@ -58,7 +59,7 @@ export class AdminComponent implements OnInit {
     ];
 
     this.rowSelection = "multiple";
-
+    this.overlayLoadingTemplate = '<span class="ag-overlay-loading-center">Please wait while your rows are loading</span>';
   }
 
 
@@ -84,7 +85,7 @@ export class AdminComponent implements OnInit {
   }
 
   fillAgGrid1() {
-    this.authService.getKisiler().subscribe(data => { this.rowDatas1 = data }
+    this.authService.getKisiler().subscribe(data => { this.rowDatas1 = data; setTimeout(() => {this.gridApi.hideOverlay();}, 600); }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
@@ -300,7 +301,7 @@ export class AdminComponent implements OnInit {
 
     if (this.dynrol == 'ADM' || !this.dynrol) {
       this.buttonText = 'Tamam';
-      this.formTitle = 'Yönetici Sabit Bilgileri';
+      this.formTitle = 'Yönetici Bilgileri';
 
       this.roleOzelAlan = new FormControl('yönetici yetki seviyesi')
 
@@ -310,7 +311,7 @@ export class AdminComponent implements OnInit {
     }
     else if (this.dynrol == 'STU') {
       this.buttonText = 'Tamam';
-      this.formTitle = 'Öğrenci Sabit Bilgileri';
+      this.formTitle = 'Öğrenci Bilgileri';
 
       this.roleOzelAlan = new FormControl('öğrenci ilgi alanları')
 
@@ -320,7 +321,7 @@ export class AdminComponent implements OnInit {
     }
     else if (this.dynrol == 'TEA') {
       this.buttonText = 'Tamam';
-      this.formTitle = 'Öğretmen Sabit Bilgileri';
+      this.formTitle = 'Öğretmen Bilgileri';
 
       this.roleOzelAlan = new FormControl('öğretmen uzmanlık alanları')
 
@@ -335,7 +336,8 @@ export class AdminComponent implements OnInit {
   onGridReady(event: any) {
     this.gridApi = event.api;
     this.gridColumnApi = event.columnApi;
-    this.alertifyService.error("onGridReady");
+    this.gridApi.showLoadingOverlay();
+    // this.alertifyService.error("onGridReady");
     this.gridApi.sizeColumnsToFit();
   }
 

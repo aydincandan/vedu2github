@@ -22,6 +22,7 @@ export class DersComponent implements OnInit {
   get RoleNAME() { return localStorage.getItem("RoleNAME") }
   private gridApi;
   private gridColumnApi;
+  private overlayLoadingTemplate;
   public columnDefs: any;
   rowDatas1 = [];
   public rowSelection: any;
@@ -35,17 +36,7 @@ export class DersComponent implements OnInit {
     ];
 
     this.rowSelection = "multiple";
-
-  }
-
-  fillAgGrid1() {
-    this.dersService.getDersler().subscribe(data => { this.rowDatas1 = data }
-      , xError => {
-        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
-        console.log("ooops:", this.subscribeERR)
-        this.alertifyService.error(this.subscribeERR);
-      }
-    )
+    this.overlayLoadingTemplate = '<span class="ag-overlay-loading-center">Please wait while your rows are loading</span>';
   }
 
   ngOnInit() {
@@ -67,10 +58,8 @@ export class DersComponent implements OnInit {
     )
   }
 
-  dersler: __Ders[]
-
-  getDers(xx: number) {
-    this.dersService.getDers(xx).subscribe(data => { this.dersler = data }
+  fillAgGrid1() {
+    this.dersService.getDersler().subscribe(data => { this.rowDatas1 = data; setTimeout(() => {this.gridApi.hideOverlay();}, 600); }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
@@ -78,8 +67,11 @@ export class DersComponent implements OnInit {
       }
     )
   }
-  getDersler() {
-    this.dersService.getDersler().subscribe(data => { this.dersler = data }
+
+  dersler: __Ders[]
+
+  getDers(xx: number) {
+    this.dersService.getDers(xx).subscribe(data => { this.dersler = data }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
@@ -187,6 +179,7 @@ export class DersComponent implements OnInit {
   onGridReady(event: any) {
     this.gridApi = event.api;
     this.gridColumnApi = event.columnApi;
+    this.gridApi.showLoadingOverlay();
     // this.alertifyService.error("onGridReady");
     this.gridApi.sizeColumnsToFit();
   }
