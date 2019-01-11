@@ -30,7 +30,7 @@ export class DersService {
   addDers(data: any): void {
     let istek: string = environment.api_url + '/dersler/add'
     this.httpClient.post(istek, data).subscribe(data => {
-      this.alertifyService.success("Ders (ID : " + data["ID"] + ") başarıyla eklendi.")
+      // this.alertifyService.success("Ders (ID : " + data["ID"] + ") başarıyla eklendi.")
       console.log("istek : " + istek)
       // this.router.navigateByUrl('/dersDetay/' + data["ID"])
     }

@@ -29,7 +29,7 @@ export class DersComponent implements OnInit {
   constructor(private dersService: DersService, private activatedRoute: ActivatedRoute, private alertifyService: AlertifyService) {
     this.columnDefs = [
       { headerName: 'ID', field: 'idE' },
-      { headerName: 'TITLE', field: 'title', editable:true },
+      { headerName: 'TITLE', field: 'title', editable: true },
       { headerName: 'dersDetaylar', field: 'dersDetaylar' },
       { headerName: 'kisininDersleri', field: 'kisininDersleri' },
     ];
@@ -53,11 +53,11 @@ export class DersComponent implements OnInit {
 
     this.activatedRoute.params.subscribe(params => {
       let xx: number = params["ID"]
-      console.log("param : " + xx)
-      if (xx)
-        this.getDers(xx);
-      else
-        this.getDersler();
+      // console.log("param : " + xx)
+      // if (xx)
+      //   this.getDers(xx);
+      // else
+      //   this.getDersler();
     }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
@@ -102,19 +102,35 @@ export class DersComponent implements OnInit {
   YeniDersGir() {
     this.onAddRow();
   }
+
+  // takip et başvur : https://www.ag-grid.com/javascript-grid-api/
+  // ayrıca buda var : https://www.ag-grid.com/javascript-grid-properties/
+  
+  ReFreshGrid(){this.fillAgGrid1()}
+  
   YeniDersiEkle() {
+
     var rowData = [];
-    this.gridApi.forEachNode(function(node) {
-      rowData.push(node.data);
-    });
-    console.log("-----------Row Data:------------");
-    console.log(rowData);
+    
+    this.gridApi.forEachNode(function (node) { rowData.push(node.data); });
+
+    // console.log("-----------Row Data:------------");
+    // console.log(rowData);
+    // console.log("-----------Row Data:------------");
+
+    var kacadetadd = 0
     for (let index = 0; index < rowData.length; index++) {
-      if(rowData[index].idE==undefined)console.log(rowData[index]);
+      if (rowData[index].idE == undefined) {
+        this.dersService.addDers(rowData[index]); // *** buraya eş ***
+        kacadetadd++;
+      }
+    }
+    if (kacadetadd > 0) {
+      setTimeout(() => {this.fillAgGrid1();}, 500);
     }
     return;
-    
-    this.myDynFormGroup=new FormGroup({
+
+    this.myDynFormGroup = new FormGroup({
       title: new FormControl("gggggg yy"),
       ID: new FormControl("123")
     });
@@ -125,21 +141,23 @@ export class DersComponent implements OnInit {
 
       console.log("sendUpdateValues:", DERS)
 
-      this.dersService.addDers(DERS)
+      this.dersService.addDers(DERS); // *** buraya eş ***
     }
   }
-  clearData() {this.gridApi.setRowData([]);}
+  
+  clearData() { this.gridApi.setRowData([]); }
 
   onAddRow() {
-    
+
+    var grc = this.gridApi.getDisplayedRowCount();
     var newItem = createNewRowData();
     var res = this.gridApi.updateRowData({ add: [newItem] });
-    printResult(res);
+    // printResult(res);
 
     function createNewRowData() {
       var newData = {
         idE: undefined, // bilemeyiz
-        title: "Yeni bir Ders giriniz..",
+        title: "#" + (grc + 1) + " Yeni bir Ders adı giriniz..",
         dersDetaylar: [],
         kisininDersleri: []
       };
@@ -148,27 +166,29 @@ export class DersComponent implements OnInit {
     function printResult(res) {
       console.log("---------------------------------------");
       if (res.add) {
-        res.add.forEach(function(rowNode) {
+        res.add.forEach(function (rowNode) {
           console.log("Added Row Node", rowNode);
         });
       }
       if (res.remove) {
-        res.remove.forEach(function(rowNode) {
+        res.remove.forEach(function (rowNode) {
           console.log("Removed Row Node", rowNode);
         });
       }
       if (res.update) {
-        res.update.forEach(function(rowNode) {
+        res.update.forEach(function (rowNode) {
           console.log("Updated Row Node", rowNode);
         });
       }
     }
 
   }
-  
+
   onGridReady(event: any) {
     this.gridApi = event.api;
     this.gridColumnApi = event.columnApi;
+    // this.alertifyService.error("onGridReady");
+    this.gridApi.sizeColumnsToFit();
   }
 
   removeSelected() {
@@ -182,6 +202,7 @@ export class DersComponent implements OnInit {
     var res = this.gridApi.updateRowData({ remove: selectedData });
     console.log("res", res);
   }
+  
   delDers(aydi: number) {
     this.dersService.delDers(aydi).subscribe(data => {
       this.alertifyService.success(aydi + " silindi.");

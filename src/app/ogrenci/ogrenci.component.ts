@@ -55,11 +55,11 @@ export class OgrenciComponent implements OnInit {
 
     this.activatedRoute.params.subscribe(params => {
       let xx: number = params["ID"]
-      console.log("param : " + xx)
-      if (xx)
-        this.getOgrenci(xx);
-      else
-        this.getOgrenciler();
+      // console.log("param : " + xx)
+      // if (xx)
+      //   this.getOgrenci(xx);
+      // else
+      //   this.getOgrenciler();
     }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
@@ -160,6 +160,7 @@ export class OgrenciComponent implements OnInit {
     this.gridApi = event.api;
     this.gridColumnApi = event.columnApi;
     this.alertifyService.error("onGridReady");
+    this.gridApi.sizeColumnsToFit();
   }
 
 }

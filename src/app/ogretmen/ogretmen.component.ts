@@ -55,11 +55,11 @@ export class OgretmenComponent implements OnInit {
 
     this.activatedRoute.params.subscribe(params => {
       let xx: number = params["ID"]
-      console.log("param : " + xx)
-      if (xx)
-        this.getOgretmen(xx);
-      else
-        this.getOgretmenler();
+      // console.log("param : " + xx)
+      // if (xx)
+      //   this.getOgretmen(xx);
+      // else
+      //   this.getOgretmenler();
     }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
@@ -160,6 +160,7 @@ export class OgretmenComponent implements OnInit {
     this.gridApi = event.api;
     this.gridColumnApi = event.columnApi;
     this.alertifyService.error("onGridReady");
+    this.gridApi.sizeColumnsToFit();
   }
 
 }

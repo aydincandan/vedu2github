@@ -53,11 +53,11 @@ export class TakvimComponent implements OnInit {
 
     this.activatedRoute.params.subscribe(params => {
       let xx: number = params["ID"]
-      console.log("param : " + xx)
-      if (xx)
-        this.getTakvim(xx);
-      else
-        this.getTakvimler();
+      // console.log("param : " + xx)
+      // if (xx)
+      //   this.getTakvim(xx);
+      // else
+      //   this.getTakvimler();
     }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
@@ -120,6 +120,8 @@ export class TakvimComponent implements OnInit {
   onGridReady(event: any) {
     this.gridApi = event.api;
     this.gridColumnApi = event.columnApi;
+    this.alertifyService.error("onGridReady");
+    this.gridApi.sizeColumnsToFit();
   }
 
   removeSelected() {

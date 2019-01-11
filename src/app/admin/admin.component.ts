@@ -64,7 +64,7 @@ export class AdminComponent implements OnInit {
 
 
   ngOnInit() {
-    this.fillAgGrid1()
+    this.fillAgGrid1();
 
     console.log("this.updateKisiID:", this.updateKisiID)
     console.log("this.dynrol:", this.dynrol)
@@ -73,7 +73,7 @@ export class AdminComponent implements OnInit {
 
     this.activatedRoute.params.subscribe(params => {
       let xx: number = params["ID"]
-      console.log("param : " + xx)
+      //console.log("param : " + xx)
     }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
@@ -336,17 +336,18 @@ export class AdminComponent implements OnInit {
     this.gridApi = event.api;
     this.gridColumnApi = event.columnApi;
     this.alertifyService.error("onGridReady");
+    this.gridApi.sizeColumnsToFit();
   }
 
   removeSelected() {
-    var selectedData = this.gridApi.getSelectedRows();
+    var selectedRowsData = this.gridApi.getSelectedRows();
 
-    for (var i in selectedData) {
-      console.log(i + ' = ' + selectedData[i].idE);
-      this.delKisi(selectedData[i].idE);
+    for (var i in selectedRowsData) {
+      // console.log(i + ' = ' + selectedRowsData[i].idE);
+      this.delKisi(selectedRowsData[i].idE);
     }
 
-    var res = this.gridApi.updateRowData({ remove: selectedData });
+    var res = this.gridApi.updateRowData({ remove: selectedRowsData });
     console.log("res", res);
   }
 }
