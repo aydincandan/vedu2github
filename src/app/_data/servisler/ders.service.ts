@@ -26,20 +26,32 @@ export class DersService {
     console.log("istek : " + istek)
     return this.httpClient.get<__Ders[]>(istek)
   }
-
-  addDers(data: any): void {
+  addDers2(data: any): any {
     let istek: string = environment.api_url + '/dersler/add'
-    this.httpClient.post(istek, data).subscribe(data => {
+    console.log("istek2 : " + istek)
+    return this.httpClient.post(istek, data)
+  }
+  addDers(data: any): Observable<__Ders[]> {
+    let cikis:__Ders[]=[];
+    let istek: string = environment.api_url + '/dersler/add'
+    console.log("istek : " + istek)
+    this.httpClient.post<__Ders[]>(istek, data).subscribe(data => {
       // this.alertifyService.success("Ders (ID : " + data["ID"] + ") başarıyla eklendi.")
-      console.log("istek : " + istek)
+      cikis = data;
+      console.log("---data : " + data)
       // this.router.navigateByUrl('/dersDetay/' + data["ID"])
+      return cikis;
     }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
         this.alertifyService.error(this.subscribeERR);
+        cikis[0] = this.subscribeERR;
+        return cikis;
       }
+      , () => {cikis[0] = 78;return cikis;}
     );
+    return cikis;
   }
 
   delDers(Id: number): Observable<__Ders[]> {

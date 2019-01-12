@@ -120,17 +120,23 @@ export class TakvimComponent implements OnInit {
   removeSelected() {
     var selectedData = this.gridApi.getSelectedRows();
 
+    var silindiaydiler=""; var silindisayisi=0;
     for (var i in selectedData) {
       console.log(i + ' = ' + selectedData[i].idE);
-      this.delDers(selectedData[i].idE);
+      this.delTakvim(selectedData[i].idE);
+      silindiaydiler+=selectedData[i].idE+", ";
+      silindisayisi++;
     }
+
+    this.alertifyService.success(silindisayisi + " adet kayıt silindi. Silinenler => " + silindiaydiler);
 
     var res = this.gridApi.updateRowData({ remove: selectedData });
     console.log("res", res);
   }
-  delDers(aydi: number) {
+  
+  delTakvim(aydi: number) {
     this.takvimService.delTakvim(aydi).subscribe(data => {
-      this.alertifyService.success(aydi + " silindi.");
+      // this.alertifyService.success(aydi + " silindi.");
     }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
