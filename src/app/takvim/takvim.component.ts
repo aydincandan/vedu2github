@@ -131,7 +131,7 @@ export class TakvimComponent implements OnInit {
     this.alertifyService.success(silindisayisi + " adet kayıt silindi. Silinenler => " + silindiaydiler);
 
     var res = this.gridApi.updateRowData({ remove: selectedData });
-    console.log("res", res);
+    console.log("updateRowData return : ", res);
   }
   
   delTakvim(aydi: number) {

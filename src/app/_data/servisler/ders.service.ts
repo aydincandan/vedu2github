@@ -29,29 +29,35 @@ export class DersService {
   addDers2(data: any): any {
     let istek: string = environment.api_url + '/dersler/add'
     console.log("istek2 : " + istek)
-    return this.httpClient.post(istek, data)
+    return this.httpClient.post<any>(istek, data)
   }
-  addDers(data: any): Observable<__Ders[]> {
-    let cikis:__Ders[]=[];
+  addDers(data: any):Observable<__Ders> {
+    let donus:__Ders
     let istek: string = environment.api_url + '/dersler/add'
-    console.log("istek : " + istek)
-    this.httpClient.post<__Ders[]>(istek, data).subscribe(data => {
-      // this.alertifyService.success("Ders (ID : " + data["ID"] + ") başarıyla eklendi.")
-      cikis = data;
-      console.log("---data : " + data)
-      // this.router.navigateByUrl('/dersDetay/' + data["ID"])
-      return cikis;
+    console.log("-istek : " + istek)
+
+    // return this.httpClient.post<__Ders>(istek, data);
+
+    this.httpClient.post<__Ders>(istek, data).subscribe(data => {
+      this.alertifyService.success("Ders (ID : " + data.idE + ") başarıyla eklendi.")
+      console.log("-data : " + data.idE)
+      // this.router.navigateByUrl('/dersDetay/' + data.idE)
+      donus = data; 
+      return donus;
     }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
         this.alertifyService.error(this.subscribeERR);
-        cikis[0] = this.subscribeERR;
-        return cikis;
+        return this.subscribeERR;
       }
-      , () => {cikis[0] = 78;return cikis;}
+      , () => {
+        console.log("The POST observable is now completed.");
+        return donus;
+      }
     );
-    return cikis;
+
+    return; // dönüş maalesef buradan -1 olarak oluyor
   }
 
   delDers(Id: number): Observable<__Ders[]> {

@@ -56,17 +56,17 @@ export class __Kisi {
     adres1: string
 }
 export class __Ders {
-    ID: number
+    idE: number
     title: string
 }
 export class __DersDetay {
-    ID: number
+    idE: number
     aciklama: string
     dersID: number
     sirano: number
 }
 export class __Icerik {
-    ID: number
+    idE: number
     belgeAciklama: string
     belgeAdi: string
     belgeLink: string
@@ -75,7 +75,7 @@ export class __Icerik {
     sirano: number
 }
 export class __Takvim {
-    ID: number
+    idE: number
     dersDetayID: number
     dersZamani: Date
     ogretmenID: number

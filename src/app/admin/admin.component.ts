@@ -350,6 +350,6 @@ export class AdminComponent implements OnInit {
     }
 
     var res = this.gridApi.updateRowData({ remove: selectedRowsData });
-    console.log("res", res);
+    console.log("updateRowData return : ", res);
   }
 }

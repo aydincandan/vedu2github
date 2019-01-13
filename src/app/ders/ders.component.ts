@@ -94,6 +94,7 @@ export class DersComponent implements OnInit {
   dersNewData: any = {}
   YeniDersGir() {
     this.onAddRow();
+    // this.YeniDersiEkle()
   }
 
   // takip et başvur : https://www.ag-grid.com/javascript-grid-api/
@@ -119,11 +120,10 @@ export class DersComponent implements OnInit {
       if (mevcutrowData[index].idE == undefined) {
         // var ayd = this.dersService.addDers(mevcutrowData[index]); // *** buraya eş ***
         // this.dersService.addDers2(mevcutrowData[index]); // *** buraya eş ***
-        this.dersService.addDers(mevcutrowData[index]).subscribe(
-dat=>{console.log("dat",dat)},
-err=>{console.log("err",err)},
-()=>{console.log("complete")}
-        );
+        //let dersAydi:__Ders = 
+        this.dersService.addDers(mevcutrowData[index]).subscribe(sonuc=>{
+          console.log("--donus : ", sonuc.idE)
+        })
         kacadetadd++;
       }
     }
@@ -213,7 +213,7 @@ err=>{console.log("err",err)},
     this.alertifyService.success(silindisayisi + " adet kayıt silindi. Silinenler => " + silindiaydiler);
 
     var res = this.gridApi.updateRowData({ remove: selectedData });
-    console.log("res", res);
+    console.log("updateRowData return : ", res);
   }
   
   delDers(aydi: number) {
