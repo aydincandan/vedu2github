@@ -59,7 +59,11 @@ export class DersComponent implements OnInit {
   }
 
   fillAgGrid1() {
-    this.dersService.getDersler().subscribe(data => { this.rowDatas1 = data; setTimeout(() => { this.gridApi.hideOverlay(); }, 600); }
+    this.dersService.getDersler().subscribe(data => { this.rowDatas1 = data; 
+      this.gridApi.hideOverlay();
+      console.log(this.rowDatas1.length + " adet Gride yüklendi."); 
+      console.log("----------------"); 
+    }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
@@ -80,6 +84,9 @@ export class DersComponent implements OnInit {
     )
   }
 
+  // takip et başvur : https://www.ag-grid.com/javascript-grid-api/
+  // ayrıca buda var : https://www.ag-grid.com/javascript-grid-properties/
+
   ide: number
   onRowClicked(event: any) {
     console.log('event.data.IdE', event.data.idE);
@@ -92,93 +99,26 @@ export class DersComponent implements OnInit {
 
   dersNewData: any = {}
   YeniDersGir() {
-    this.onAddRow();
-    // this.YeniDersiEkle()
-  }
+    var adet=10
+    console.log(adet + " adet gridde yer açılıyor")
+    for (var kere = 0; kere < adet; kere++){
+      this.onAddRow();
+    }
+    console.log(adet + " adet db ye yazılıyor")
+    this.YeniDersleriEkle()
+    console.log(adet + " adet db ye yazılımı bitti.")
+    console.log("Şimdi db den çekilip gride set ediliyor.")
+    setTimeout(() => { this.ReFreshGrid(); }, 100);
+}
 
-  // takip et başvur : https://www.ag-grid.com/javascript-grid-api/
-  // ayrıca buda var : https://www.ag-grid.com/javascript-grid-properties/
+
 
   ReFreshGrid() {
     this.gridApi.showLoadingOverlay();
     this.fillAgGrid1();
   }
 
-  YeniDersiEkle() {
-
-    var mevcutrowData = [];
-
-    this.gridApi.forEachNode(function (node) { mevcutrowData.push(node.data); });
-
-    // console.log("-----------Row Data:------------");
-    // console.log(rowData);
-    // console.log("-----------Row Data:------------");
-
-    var kacadetadd = 0
-    for (let index = 0; index < mevcutrowData.length; index++) {
-      if (mevcutrowData[index].idE == undefined) {
-        this.dersService.addDers(mevcutrowData[index]).subscribe(
-          xReturn => {
-            console.log("mevcutrowData[index] : ", mevcutrowData[index]);
-            mevcutrowData[index] = xReturn;
-            console.log("mevcutrowData[index] : ", mevcutrowData[index]);
-          }
-          , xError => {
-            this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
-            console.log("ooops:", this.subscribeERR)
-            this.alertifyService.error(this.subscribeERR);
-          }
-          , () => {
-            console.log("now completed.");
-            if (kacadetadd > 0) {
-              if (true) {
-                setTimeout(() => {
-                  this.ReFreshGrid();
-                }, 600);
-              }
-              else {
-                // burada,
-                // tüm gridi refresh yapmadan yalnızca add'lenen rowun 
-                // id sini update-display yapabilmeliyiz.
-                // birde : add haricinde üzerinde bulunan 
-                // selected rowun update title ının enter tuşuna basılarakta güncellenebilmesini sağla
-              }
-            }
-          }
-        )
-        kacadetadd++;
-      }
-    }
-
-    // if (kacadetadd > 0) {
-    //   setTimeout(() => {
-    //     this.ReFreshGrid();
-    //   }, 600);
-    // }
-
-    return;
-
-    this.myDynFormGroup = new FormGroup({
-      title: new FormControl("gggggg yy"),
-      ID: new FormControl("123")
-    });
-
-    if (this.myDynFormGroup.valid) {
-
-      let DERS: any = Object.assign({}, this.myDynFormGroup.value);
-
-      console.log("sendUpdateValues:", DERS)
-
-      this.dersService.addDers(DERS); // *** buraya eş ***
-    }
-  }
-
-  ClearGrid() {
-    this.gridApi.setRowData([]);
-  }
-
   onAddRow() {
-
     var grc = this.gridApi.getDisplayedRowCount();
     var newItem = createNewRowData();
     var res = this.gridApi.updateRowData({ add: [newItem] });
@@ -213,12 +153,88 @@ export class DersComponent implements OnInit {
     }
 
   }
+  YeniDersleriEkle() {
+
+    var mevcutrowData = [];
+
+    this.gridApi.forEachNode(function (node) { mevcutrowData.push(node.data); });
+
+    // console.log("-----------Row Data:------------");
+    // console.log(rowData);
+    // console.log("-----------Row Data:------------");
+
+    var kacadetadd = 0
+    var yeninevar = []
+    for (let index = 0; index < mevcutrowData.length; index++) {
+      if (mevcutrowData[index].idE == undefined) {
+        yeninevar[kacadetadd] = mevcutrowData[index]
+        kacadetadd++
+      }
+    }
+    // manuel durumda çoğunlukla 1 olacaktır.
+    for (let index = 0; index < yeninevar.length; index++) {
+      this.dersService.addDers(yeninevar[index]).subscribe(
+        xReturn => {
+          //console.log("yeninevar[index] : ", yeninevar[index]);
+          yeninevar[index] = xReturn;
+          //console.log("yeninevar[index] : ", yeninevar[index]);
+        }
+        , xError => {
+          this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
+          //console.log("ooops:", this.subscribeERR)
+          //this.alertifyService.error(this.subscribeERR);
+        }
+        , () => {
+          //console.log("now completed.");
+          //setTimeout(() => { this.ReFreshGrid(); }, 100);
+        }
+      )
+
+      //console.log("kacadetadd : ", kacadetadd);
+
+      if (true) {
+        //setTimeout(() => { this.ReFreshGrid(); }, 100);
+      }
+      else {
+        // burada,
+        // tüm gridi refresh yapmadan yalnızca add'lenen rowun 
+        // id sini update-display yapabilmeliyiz.
+        // birde : add haricinde üzerinde bulunan 
+        // selected rowun update title ının enter tuşuna basılarakta güncellenebilmesini sağla
+      }
+    }
+
+    // if (kacadetadd > 0) {
+    //   setTimeout(() => {
+    //     this.ReFreshGrid();
+    //   }, 600);
+    // }
+
+    return;
+
+    this.myDynFormGroup = new FormGroup({
+      title: new FormControl("gggggg yy"),
+      ID: new FormControl("123")
+    });
+
+    if (this.myDynFormGroup.valid) {
+
+      let DERS: any = Object.assign({}, this.myDynFormGroup.value);
+
+      console.log("sendUpdateValues:", DERS)
+
+      this.dersService.addDers(DERS); // *** buraya eş ***
+    }
+  }
+
+  ClearGrid() {
+    this.gridApi.setRowData([]);
+  }
 
   onGridReady(event: any) {
     this.gridApi = event.api;
     this.gridColumnApi = event.columnApi;
-    this.gridApi.showLoadingOverlay();
-    // this.alertifyService.error("onGridReady");
+    this.gridApi.showLoadingOverlay(); // no rows to show gözükmesin diye
     this.gridApi.sizeColumnsToFit();
   }
 
