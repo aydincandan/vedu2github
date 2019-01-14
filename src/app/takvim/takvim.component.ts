@@ -84,7 +84,6 @@ export class TakvimComponent implements OnInit {
   onRowClicked(event: any) {
     console.log('event.data.IdE', event.data.idE);
     let ide = event.data.idE;
-    this.alertifyService.error("on row clicked");
     return ide;
   }
 
