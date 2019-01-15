@@ -40,7 +40,7 @@ export class DersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fillAgGrid1()
+    // bu ongridready ye this.ReFreshGrid()
 
     this.activatedRoute.params.subscribe(params => {
       let xx: number = params["ID"]
@@ -58,16 +58,29 @@ export class DersComponent implements OnInit {
     )
   }
 
+  onGridReady(event: any) {
+    this.gridApi = event.api;
+    this.gridColumnApi = event.columnApi;
+    this.ReFreshGrid(); // bu satır ngOnInit() in ilk satırındaydı.
+    this.gridApi.sizeColumnsToFit();
+  }
+
+  ReFreshGrid() {
+    this.gridApi.showLoadingOverlay(); // no rows to show gözükmesin diye
+    this.fillAgGrid1();
+    setTimeout(() => { this.gridApi.hideOverlay(); }, 600);
+  }
+
   fillAgGrid1() {
-    this.dersService.getDersler().subscribe(data => { this.rowDatas1 = data; 
-      this.gridApi.hideOverlay();
-      console.log(this.rowDatas1.length + " adet Gride yüklendi."); 
-      console.log("----------------"); 
-    }
+    this.dersService.getDersler().subscribe(data => { this.rowDatas1 = data; }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
         this.alertifyService.error(this.subscribeERR);
+      }
+      , () => {
+        console.log(this.rowDatas1.length + " adet Gride yüklendi.");
+        console.log("----------------");
       }
     )
   }
@@ -99,9 +112,9 @@ export class DersComponent implements OnInit {
 
   dersNewData: any = {}
   YeniDersGir() {
-    var adet=10
+    var adet = 500;
     console.log(adet + " adet gridde yer açılıyor")
-    for (var kere = 0; kere < adet; kere++){
+    for (var kere = 0; kere < adet; kere++) {
       this.onAddRow();
     }
     console.log(adet + " adet db ye yazılıyor")
@@ -109,13 +122,6 @@ export class DersComponent implements OnInit {
     console.log(adet + " adet db ye yazılımı bitti.")
     console.log("Şimdi db den çekilip gride set ediliyor.")
     setTimeout(() => { this.ReFreshGrid(); }, 100);
-}
-
-
-
-  ReFreshGrid() {
-    this.gridApi.showLoadingOverlay();
-    this.fillAgGrid1();
   }
 
   onAddRow() {
@@ -127,7 +133,7 @@ export class DersComponent implements OnInit {
     function createNewRowData() {
       var newData = {
         idE: undefined, // bilemeyiz
-        title: "#" + (grc + 1) + " Yeni bir Ders adı giriniz..",
+        title: "#" + (grc + 1) + " xYeni bir Ders adı giriniz..",
         dersDetaylar: [],
         kisininDersleri: []
       };
@@ -153,6 +159,7 @@ export class DersComponent implements OnInit {
     }
 
   }
+
   YeniDersleriEkle() {
 
     var mevcutrowData = [];
@@ -229,13 +236,6 @@ export class DersComponent implements OnInit {
 
   ClearGrid() {
     this.gridApi.setRowData([]);
-  }
-
-  onGridReady(event: any) {
-    this.gridApi = event.api;
-    this.gridColumnApi = event.columnApi;
-    this.gridApi.showLoadingOverlay(); // no rows to show gözükmesin diye
-    this.gridApi.sizeColumnsToFit();
   }
 
   removeSelected() {
