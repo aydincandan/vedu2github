@@ -68,7 +68,7 @@ export class DersComponent implements OnInit {
   ReFreshGrid() {
     this.gridApi.showLoadingOverlay(); // no rows to show gözükmesin diye
     this.fillAgGrid1();
-    setTimeout(() => { this.gridApi.hideOverlay(); }, 600);
+    setTimeout(() => { this.gridApi.hideOverlay(); }, 1);
   }
 
   fillAgGrid1() {
@@ -99,7 +99,14 @@ export class DersComponent implements OnInit {
 
   // takip et başvur : https://www.ag-grid.com/javascript-grid-api/
   // ayrıca buda var : https://www.ag-grid.com/javascript-grid-properties/
+  // bunu da unutma  : https://www.ag-grid.com/javascript-grid-events/
 
+  // https://www.ag-grid.com/javascript-grid-cell-editing/#fullRowEdit
+  // https://www.ag-grid.com/javascript-grid-cell-editing/#fullRowEdit
+  // https://www.ag-grid.com/javascript-grid-cell-editing/#fullRowEdit
+  // https://www.ag-grid.com/javascript-grid-cell-editing/#fullRowEdit
+  // https://www.ag-grid.com/javascript-grid-cell-editing/#fullRowEdit
+  
   ide: number
   onRowClicked(event: any) {
     console.log('event.data.IdE', event.data.idE);
@@ -112,16 +119,16 @@ export class DersComponent implements OnInit {
 
   dersNewData: any = {}
   YeniDersGir() {
-    var adet = 500;
+    var adet = 1;
     console.log(adet + " adet gridde yer açılıyor")
     for (var kere = 0; kere < adet; kere++) {
       this.onAddRow();
     }
-    console.log(adet + " adet db ye yazılıyor")
-    this.YeniDersleriEkle()
-    console.log(adet + " adet db ye yazılımı bitti.")
-    console.log("Şimdi db den çekilip gride set ediliyor.")
-    setTimeout(() => { this.ReFreshGrid(); }, 100);
+    // console.log(adet + " adet db ye yazılıyor")
+    // this.YeniDersleriEkle()
+    // console.log(adet + " adet db ye yazılımı bitti.")
+    // console.log("Şimdi db den çekilip gride set ediliyor.")
+    // setTimeout(() => { this.ReFreshGrid(); }, 100);
   }
 
   onAddRow() {
@@ -182,9 +189,17 @@ export class DersComponent implements OnInit {
     for (let index = 0; index < yeninevar.length; index++) {
       this.dersService.addDers(yeninevar[index]).subscribe(
         xReturn => {
-          //console.log("yeninevar[index] : ", yeninevar[index]);
+          
+          console.log("yeninevar[index] : ", yeninevar[index]);
           yeninevar[index] = xReturn;
-          //console.log("yeninevar[index] : ", yeninevar[index]);
+          console.log("yeninevar[index] : ", yeninevar[index]);
+
+
+
+          // var rowNode = this.gridApi.getRowNode(this.gridApi.getRowNodeId(xReturn));
+          // console.log("rowNode : ",rowNode)
+          // rowNode.setDataValue("idE", xReturn.idE);
+          // rowNode.setData(xReturn);
         }
         , xError => {
           this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
