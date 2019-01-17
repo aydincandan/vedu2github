@@ -100,7 +100,6 @@ export class DersComponent implements OnInit {
   // takip et başvur : https://www.ag-grid.com/javascript-grid-api/
   // ayrıca buda var : https://www.ag-grid.com/javascript-grid-properties/
   // bunu da unutma  : https://www.ag-grid.com/javascript-grid-events/
-
   // https://www.ag-grid.com/javascript-grid-cell-editing/#fullRowEdit
 
   ide: number
