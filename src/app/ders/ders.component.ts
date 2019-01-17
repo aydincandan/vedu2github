@@ -102,15 +102,26 @@ export class DersComponent implements OnInit {
   // bunu da unutma  : https://www.ag-grid.com/javascript-grid-events/
 
   // https://www.ag-grid.com/javascript-grid-cell-editing/#fullRowEdit
-  // https://www.ag-grid.com/javascript-grid-cell-editing/#fullRowEdit
-  // https://www.ag-grid.com/javascript-grid-cell-editing/#fullRowEdit
-  // https://www.ag-grid.com/javascript-grid-cell-editing/#fullRowEdit
-  // https://www.ag-grid.com/javascript-grid-cell-editing/#fullRowEdit
-  
+
   ide: number
   onRowClicked(event: any) {
     console.log('event.data.IdE', event.data.idE);
     let ide = event.data.idE;
+    return ide;
+  }
+  onCellValueChanged(event: any) {
+    // https://www.ag-grid.com/javascript-grid-cell-editing/#event-cell-value-changed
+    console.log('onCellValueChanged : ', event.data.idE);
+    console.log('onCellValueChanged : ', event.data.title);
+    let ide = event.data.idE;
+    this.dersService.setDers(event.data.idE, event.data).subscribe(
+      xReturn => { console.log("xReturn : ", xReturn) }
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
+        console.log("ooops:", this.subscribeERR)
+        this.alertifyService.error(this.subscribeERR);
+      }
+    )
     return ide;
   }
 
@@ -189,7 +200,7 @@ export class DersComponent implements OnInit {
     for (let index = 0; index < yeninevar.length; index++) {
       this.dersService.addDers(yeninevar[index]).subscribe(
         xReturn => {
-          
+
           console.log("yeninevar[index] : ", yeninevar[index]);
           yeninevar[index] = xReturn;
           console.log("yeninevar[index] : ", yeninevar[index]);
