@@ -134,11 +134,13 @@ export class DersComponent implements OnInit {
     for (var kere = 0; kere < adet; kere++) {
       this.onAddRow();
     }
-    // console.log(adet + " adet db ye yazılıyor")
-    // this.YeniDersleriEkle()
-    // console.log(adet + " adet db ye yazılımı bitti.")
-    // console.log("Şimdi db den çekilip gride set ediliyor.")
-    // setTimeout(() => { this.ReFreshGrid(); }, 100);
+    if (adet > 1) {
+      console.log(adet + " adet db ye yazılıyor")
+      this.YeniDersleriEkle()
+      console.log(adet + " adet db ye yazılımı bitti.")
+      console.log("Şimdi db den çekilip gride set ediliyor.")
+      setTimeout(() => { this.ReFreshGrid(); }, 100);
+    }
   }
 
   onAddRow() {
@@ -181,11 +183,12 @@ export class DersComponent implements OnInit {
 
     var mevcutrowData = [];
 
-    this.gridApi.forEachNode(function (node) { mevcutrowData.push(node.data); });
+    this.gridApi.forEachNode(function (node) {
+      //console.log("node.data : ", node.data)
+      mevcutrowData.push(node.data);
+    });
 
-    // console.log("-----------Row Data:------------");
-    // console.log(rowData);
-    // console.log("-----------Row Data:------------");
+    console.log("mevcutrowData.length : ", mevcutrowData.length);
 
     var kacadetadd = 0
     var yeninevar = []
@@ -195,14 +198,18 @@ export class DersComponent implements OnInit {
         kacadetadd++
       }
     }
+    console.log("kacadetadd : ", kacadetadd);
+
+    console.log("yeninevar.length : ", yeninevar.length);
+
     // manuel durumda çoğunlukla 1 olacaktır.
     for (let index = 0; index < yeninevar.length; index++) {
       this.dersService.addDers(yeninevar[index]).subscribe(
         xReturn => {
 
-          console.log("yeninevar[index] : ", yeninevar[index]);
+          //console.log("yeninevar[index] : ", yeninevar[index]);
           yeninevar[index] = xReturn;
-          console.log("yeninevar[index] : ", yeninevar[index]);
+          //console.log("yeninevar[index] : ", yeninevar[index]);
 
 
 
@@ -214,26 +221,13 @@ export class DersComponent implements OnInit {
         , xError => {
           this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
           //console.log("ooops:", this.subscribeERR)
-          //this.alertifyService.error(this.subscribeERR);
+          this.alertifyService.error(this.subscribeERR);
         }
         , () => {
           //console.log("now completed.");
-          //setTimeout(() => { this.ReFreshGrid(); }, 100);
+          if (yeninevar.length == 1) this.ReFreshGrid(); // aslında buna gerek kalmamalı. Data veritabanına yazıldığında gridde de görülebilmeli.
         }
       )
-
-      //console.log("kacadetadd : ", kacadetadd);
-
-      if (true) {
-        //setTimeout(() => { this.ReFreshGrid(); }, 100);
-      }
-      else {
-        // burada,
-        // tüm gridi refresh yapmadan yalnızca add'lenen rowun 
-        // id sini update-display yapabilmeliyiz.
-        // birde : add haricinde üzerinde bulunan 
-        // selected rowun update title ının enter tuşuna basılarakta güncellenebilmesini sağla
-      }
     }
 
     // if (kacadetadd > 0) {
