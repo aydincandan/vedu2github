@@ -72,7 +72,7 @@ export class DersComponent implements OnInit {
   }
 
   fillAgGrid1() {
-    this.dersService.getDersler().subscribe(data => { this.rowDatas1 = data; }
+    this.dersService.getDersler().subscribe(data => { console.log("data = " + JSON.stringify(data)); this.rowDatas1 = data; }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
@@ -88,7 +88,7 @@ export class DersComponent implements OnInit {
   dersler: __Ders[]
 
   getDers(xx: number) {
-    this.dersService.getDers(xx).subscribe(data => { this.dersler = data }
+    this.dersService.getDers(xx).subscribe(data => { console.log("data = " + JSON.stringify(data)); this.dersler = data }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
@@ -113,8 +113,7 @@ export class DersComponent implements OnInit {
     console.log('onCellValueChanged : ', event.data.idE);
     console.log('onCellValueChanged : ', event.data.title);
     let ide = event.data.idE;
-    this.dersService.setDers(event.data.idE, event.data).subscribe(
-      xReturn => { console.log("xReturn : ", xReturn) }
+    this.dersService.setDers(event.data.idE, event.data).subscribe(xReturn => { console.log("xReturn : ", xReturn) }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
@@ -204,8 +203,7 @@ export class DersComponent implements OnInit {
 
     // manuel durumda çoğunlukla 1 olacaktır.
     for (let index = 0; index < yeninevar.length; index++) {
-      this.dersService.addDers(yeninevar[index]).subscribe(
-        xReturn => {
+      this.dersService.addDers(yeninevar[index]).subscribe(xReturn => {
 
           //console.log("yeninevar[index] : ", yeninevar[index]);
           yeninevar[index] = xReturn;
@@ -275,7 +273,7 @@ export class DersComponent implements OnInit {
   }
 
   delDers(aydi: number) {
-    this.dersService.delDers(aydi).subscribe(data => {
+    this.dersService.delDers(aydi).subscribe(data => { console.log("data = " + JSON.stringify(data));
       // this.alertifyService.success(aydi + " silindi.");
     }
       , xError => {

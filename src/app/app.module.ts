@@ -19,7 +19,6 @@ import { AlertifyService } from './_data/servisler/alertify.service';
 import { NavComponent } from './nav/nav.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { WelcomeComponent } from './welcome/welcome.component';
-import { SiltestComponent } from './siltest/siltest.component';
 import { SlimLoadingBarModule } from 'ng2-slim-loading-bar';
 
 @NgModule({
@@ -33,7 +32,6 @@ import { SlimLoadingBarModule } from 'ng2-slim-loading-bar';
       RegisterComponent,
       NavComponent,
       WelcomeComponent,
-      SiltestComponent
    ],
    imports: [
       BrowserModule,

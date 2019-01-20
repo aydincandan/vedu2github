@@ -72,7 +72,7 @@ export class OgrenciComponent implements OnInit {
   }
 
   fillAgGrid1() {
-    this.ogrenciService.getOgrenciler().subscribe(data => { this.rowDatas1 = data; setTimeout(() => {this.gridApi.hideOverlay();}, 600); }
+    this.ogrenciService.getOgrenciler().subscribe(data => { console.log("data = " + JSON.stringify(data)); this.rowDatas1 = data; setTimeout(() => {this.gridApi.hideOverlay();}, 600); }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
@@ -125,8 +125,7 @@ export class OgrenciComponent implements OnInit {
       kisi.IlgiAlanlari = this.myDynFormGroup.value.IlgiAlanlari;
       console.log("sendUpdateValues:", kisi)
 
-      this.ogrenciService.putOgrenci(kisi).subscribe(
-        OkReturn => { console.log("OkReturn:", OkReturn); this.alertifyService.success("GÜNCELLENDİ :-)"); }
+      this.ogrenciService.putOgrenci(kisi).subscribe(OkReturn => { console.log("OkReturn:", OkReturn); this.alertifyService.success("GÜNCELLENDİ :-)"); }
         , xError => {
           this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
           console.log("ooops:", this.subscribeERR)
@@ -137,7 +136,7 @@ export class OgrenciComponent implements OnInit {
   }
 
   getOgrenci(xx: number) {
-    this.ogrenciService.getOgrenci(xx).subscribe(data => {
+    this.ogrenciService.getOgrenci(xx).subscribe(data => { console.log("data = " + JSON.stringify(data));
       this.rowData = data;
       // console.log(this.rowData)
       this.setmyDynFormGroup()

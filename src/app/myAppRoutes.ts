@@ -7,10 +7,7 @@ import { TakvimComponent } from "./takvim/takvim.component";
 import { RegisterComponent } from "./register/register.component";
 import { WelcomeComponent } from "./welcome/welcome.component";
 
-import { SiltestComponent } from './siltest/siltest.component';
-
 export const myAppRoutes: Routes = [
-    { path: "siltest", component: SiltestComponent },
 
     { path: "ogrenci", component: OgrenciComponent },
     // { path: "ogrenci/:iD", component: OgrenciComponent },

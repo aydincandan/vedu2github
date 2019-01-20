@@ -42,36 +42,4 @@ export class DersService {
     return this.httpClient.post<__Ders>(istek, data)
   }
 
-  /*
-  SERVISLERDE BU AŞAĞIDAKİ GİBİ KULLANMA 
-  */
-
-  // addDers(data: any):Observable<__Ders> {
-  //   let donus:Observable<__Ders>
-  //   let istek: string = environment.api_url + '/dersler/add';console.log("-istek : " + istek)
-
-  //   // return this.httpClient.post<__Ders>(istek, data);
-
-  //   this.httpClient.post<__Ders>(istek, data).subscribe(data => {
-  //     this.alertifyService.success("Ders (ID : " + data.idE + ") başarıyla eklendi.")
-  //     console.log("-data : " + data.idE)
-  //     // this.router.navigateByUrl('/dersDetay/' + data.idE)
-  //     //donus = data; 
-  //     return donus;
-  //   }
-  //     , xError => {
-  //       this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
-  //       console.log("ooops:", this.subscribeERR)
-  //       this.alertifyService.error(this.subscribeERR);
-  //       return this.subscribeERR;
-  //     }
-  //     , () => {
-  //       console.log("-The POST observable is now completed.");
-  //       return donus;
-  //     }
-  //   );
-
-  //   return donus; // dönüş maalesef buradan -1 olarak oluyor
-  // }
-
 }

@@ -3,7 +3,6 @@ import { HttpClient } from "@angular/common/http"
 import { Observable } from 'rxjs';
 import { __Kisi, ogretmenUpdateDto } from '../modeller/hepsi.model';
 import { environment } from 'src/environments/environment';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +10,7 @@ import { Router } from '@angular/router';
 
 export class OgretmenService {
 
-  constructor(private httpClient: HttpClient, private router: Router) { }
+  constructor(private httpClient: HttpClient) { }
 
   getOgretmenler(): Observable<__Kisi[]> {
     let istek: string = environment.api_url + "/Ogretmenler";

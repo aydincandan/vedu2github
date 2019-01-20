@@ -59,7 +59,7 @@ export class TakvimComponent implements OnInit {
   }
 
   fillAgGrid1() {
-    this.takvimService.getTakvimler().subscribe(data => { this.rowDatas1 = data; setTimeout(() => {this.gridApi.hideOverlay();}, 600); }
+    this.takvimService.getTakvimler().subscribe(data => { console.log("data = " + JSON.stringify(data)); this.rowDatas1 = data; setTimeout(() => { this.gridApi.hideOverlay(); }, 600); }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
@@ -71,7 +71,7 @@ export class TakvimComponent implements OnInit {
   takvimler: __Takvim[]
 
   getTakvim(xx: number) {
-    this.takvimService.getTakvim(xx).subscribe(data => { this.takvimler = data }
+    this.takvimService.getTakvim(xx).subscribe(data => { console.log("data = " + JSON.stringify(data)); this.takvimler = data }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
@@ -89,11 +89,11 @@ export class TakvimComponent implements OnInit {
 
   myDynFormGroup: FormGroup;
   aPersonUpdate: any = {}
-
   takvimNewData: any = {}
+
   takvimEkle() {
 
-    this.myDynFormGroup=new FormGroup({
+    this.myDynFormGroup = new FormGroup({
       title: new FormControl("takvim afafadsf"),
       zaman: new FormControl("123")
     });
@@ -105,6 +105,16 @@ export class TakvimComponent implements OnInit {
       console.log("sendUpdateValues:", TAKVIM)
 
       this.takvimService.addTakvim(TAKVIM)
+        .subscribe(data => { console.log("data = " + JSON.stringify(data));
+          this.alertifyService.success("Takvim (ID : " + data.idE + ") başarıyla eklendi.")
+          // this.router.navigateByUrl('/takvimDetay/' + data["ID"])
+        }
+          , xError => {
+            this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
+            console.log("ooops:", this.subscribeERR)
+            this.alertifyService.error(this.subscribeERR);
+          }
+        );
     }
   }
 
@@ -119,11 +129,11 @@ export class TakvimComponent implements OnInit {
   removeSelected() {
     var selectedData = this.gridApi.getSelectedRows();
 
-    var silindiaydiler=""; var silindisayisi=0;
+    var silindiaydiler = ""; var silindisayisi = 0;
     for (var i in selectedData) {
       console.log(i + ' = ' + selectedData[i].idE);
       this.delTakvim(selectedData[i].idE);
-      silindiaydiler+=selectedData[i].idE+", ";
+      silindiaydiler += selectedData[i].idE + ", ";
       silindisayisi++;
     }
 
@@ -132,9 +142,9 @@ export class TakvimComponent implements OnInit {
     var res = this.gridApi.updateRowData({ remove: selectedData });
     console.log("updateRowData return : ", res);
   }
-  
+
   delTakvim(aydi: number) {
-    this.takvimService.delTakvim(aydi).subscribe(data => {
+    this.takvimService.delTakvim(aydi).subscribe(data => { console.log("data = " + JSON.stringify(data));
       // this.alertifyService.success(aydi + " silindi.");
     }
       , xError => {

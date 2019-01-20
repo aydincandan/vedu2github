@@ -72,7 +72,7 @@ export class OgretmenComponent implements OnInit {
   }
 
   fillAgGrid1() {
-    this.ogretmenService.getOgretmenler().subscribe(data => { this.rowDatas1 = data; setTimeout(() => {this.gridApi.hideOverlay();}, 600); }
+    this.ogretmenService.getOgretmenler().subscribe(data => { console.log("data = " + JSON.stringify(data)); this.rowDatas1 = data; setTimeout(() => {this.gridApi.hideOverlay();}, 600); }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
@@ -125,8 +125,7 @@ export class OgretmenComponent implements OnInit {
       kisi.UzmanlikAlanlari = this.myDynFormGroup.value.UzmanlikAlanlari;
       console.log("sendUpdateValues:", kisi)
 
-      this.ogretmenService.putOgretmen(kisi).subscribe(
-        OkReturn => { console.log("OkReturn:", OkReturn); this.alertifyService.success("GÜNCELLENDİ :-)"); }
+      this.ogretmenService.putOgretmen(kisi).subscribe(OkReturn => { console.log("OkReturn:", OkReturn); this.alertifyService.success("GÜNCELLENDİ :-)"); }
         , xError => {
           this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
           console.log("ooops:", this.subscribeERR)
@@ -137,7 +136,7 @@ export class OgretmenComponent implements OnInit {
   }
 
   getOgretmen(xx: number) {
-    this.ogretmenService.getOgretmen(xx).subscribe(data => {
+    this.ogretmenService.getOgretmen(xx).subscribe(data => { console.log("data = " + JSON.stringify(data));
       this.rowData = data;
       // console.log(this.rowData)
       this.setmyDynFormGroup()

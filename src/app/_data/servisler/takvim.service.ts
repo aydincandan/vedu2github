@@ -27,19 +27,10 @@ export class TakvimService {
     return this.httpClient.get<__Takvim[]>(istek)
   }
 
-  addTakvim(data: __Takvim) {
+  addTakvim(data: __Takvim): Observable<__Takvim> {
     let istek: string = environment.api_url + '/takvimler/add'
-    this.httpClient.post(istek, data).subscribe(data => {
-      this.alertifyService.success("Takvim (ID : " + data["ID"] + ") başarıyla eklendi.")
-      console.log("istek : " + istek)
-      // this.router.navigateByUrl('/takvimDetay/' + data["ID"])
-    }
-      , xError => {
-        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
-        console.log("ooops:", this.subscribeERR)
-        this.alertifyService.error(this.subscribeERR);
-      }
-    );
+    console.log("istek : " + istek)
+    return this.httpClient.post<__Takvim>(istek, data)
   }
 
   delTakvim(Id: number): Observable<__Takvim[]> {

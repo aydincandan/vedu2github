@@ -40,59 +40,38 @@ export class AuthService {
     return this.httpClient.get<__Kisi[]>(istek)
   }
 
-  KisiRegister(registerUser: UserForRegisterDto): void {
+  delKisi(Id: number): Observable<__Kisi[]> {
+    let istek: string = environment.api_url + "/Auth/Kisiler/delete/" + Id;
+    console.log("istek : " + istek)
+    return this.httpClient.delete<__Kisi[]>(istek)
+  }
+
+  getKisi(Id: number): Observable<__Kisi[]> {
+    let istek: string = environment.api_url + "/Auth/Kisiler/" + Id;
+    console.log("istek : " + istek)
+    return this.httpClient.get<__Kisi[]>(istek)
+  }
+
+  getKisiler(): Observable<__Kisi[]> {
+    let istek: string = environment.api_url + "/Auth/Kisiler";
+    console.log("istek : " + istek)
+    return this.httpClient.get<__Kisi[]>(istek)
+  }
+
+  KisiRegister(registerUser: UserForRegisterDto): Observable<any> {
     let headers = new HttpHeaders()
     headers = headers.append("Content-Type", "application/json")
-    this.httpClient
-      .post(environment.api_url + "/auth/KisiRegister", registerUser, { headers: headers })
-      .subscribe(data => {
-        this.alertifyService.success("auth.service.KisiRegister(" + localStorage.getItem(_LUK) + ") sisteme kaydedildi")
-      }
-        , xError => {
-          this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error.modelStateAddedErrors[0].errorMessage; // YetkisizlikMetkisizlik
-          console.log("ooops:", this.subscribeERR)
-          this.alertifyService.error(this.subscribeERR);
-        }
-      );
+    return this.httpClient
+      .post<any>(environment.api_url + "/auth/KisiRegister", registerUser, { headers: headers })
   }
 
-  KisiLogin(loginUser: UserForLoginDto) {
+  KisiLogin(loginUser: UserForLoginDto): Observable<__Kisi[]>  {
     let headers = new HttpHeaders();
     headers = headers.append("Content-Type", "application/json");
-    this.httpClient
-      .post(environment.api_url + "/auth/KisiLogin", loginUser, { headers: headers })
-      .subscribe(data => {
-        this.saveToken(data);
-        this.userToken = data;
-        this.decodedToken = this.jwtHelper.decodeToken(data.toString());
-
-        this.alertifyService.success("auth.service Sisteme giriş(" + localStorage.getItem(_LUK) + ") yapıldı(" + this.getCurrentUserId() + ")");
-
-        // username ve userID burda mevcut ve aşağıdaki gibi de yakaladık
-        let ccc: __Kisi[]
-        this.getLoggedKisi().subscribe(data => {
-          ccc = data
-          localStorage.setItem("RoleNAME", data[0].KISITIPI)
-          localStorage.setItem("IdE2", data[0].IdE.toString())
-          localStorage.setItem("TokenExpireDate", this.myDateToString(this.jwtHelper.getTokenExpirationDate(this.userToken)))
-          localStorage.setItem("IsTokenExpired", this.myBoolToString(this.jwtHelper.isTokenExpired(this.userToken)))
-        }
-          , xError => {
-            this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error.modelStateAddedErrors[0].errorMessage; // YetkisizlikMetkisizlik
-            console.log("ooops:", this.subscribeERR)
-            this.alertifyService.error(this.subscribeERR);
-          }
-        )
-      }
-        , xError => {
-          this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error.modelStateAddedErrors[0].errorMessage; // YetkisizlikMetkisizlik
-          console.log("ooops:", this.subscribeERR)
-          this.alertifyService.error(this.subscribeERR);
-        }
-      );
-    this.router.navigate(['/welcome'])
+    return this.httpClient
+      .post<__Kisi[]>(environment.api_url + "/auth/KisiLogin", loginUser, { headers: headers })
   }
-
+  
   saveToken(tokendata) { localStorage.setItem(this.TOKEN_KEY, tokendata) }
   get savedToken() { return localStorage.getItem(this.TOKEN_KEY) }
 
@@ -128,23 +107,5 @@ export class AuthService {
       return "true";
     else
       return "false"
-  }
-
-  delKisi(Id: number): Observable<__Kisi[]> {
-    let istek: string = environment.api_url + "/Auth/Kisiler/delete/" + Id;
-    console.log("istek : " + istek)
-    return this.httpClient.delete<__Kisi[]>(istek)
-  }
-
-  getKisi(Id: number): Observable<__Kisi[]> {
-    let istek: string = environment.api_url + "/Auth/Kisiler/" + Id;
-    console.log("istek : " + istek)
-    return this.httpClient.get<__Kisi[]>(istek)
-  }
-
-  getKisiler(): Observable<__Kisi[]> {
-    let istek: string = environment.api_url + "/Auth/Kisiler";
-    console.log("istek : " + istek)
-    return this.httpClient.get<__Kisi[]>(istek)
   }
 }

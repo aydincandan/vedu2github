@@ -85,7 +85,7 @@ export class AdminComponent implements OnInit {
   }
 
   fillAgGrid1() {
-    this.authService.getKisiler().subscribe(data => { this.rowDatas1 = data; setTimeout(() => {this.gridApi.hideOverlay();}, 600); }
+    this.authService.getKisiler().subscribe(data => { console.log("data = " + JSON.stringify(data)); this.rowDatas1 = data; setTimeout(() => { this.gridApi.hideOverlay(); }, 600); }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
@@ -173,8 +173,7 @@ export class AdminComponent implements OnInit {
       kisi.YetkiSeviye = this.myDynFormGroup.value.YetkiSeviye;
       console.log("sendUpdateValues:", kisi)
 
-      this.adminService.putAdmin(kisi).subscribe(
-        OkReturn => { console.log("OkReturn:", OkReturn); this.alertifyService.success("GÜNCELLENDİ :-)"); }
+      this.adminService.putAdmin(kisi).subscribe(OkReturn => { console.log("OkReturn:", OkReturn); this.alertifyService.success("GÜNCELLENDİ :-)"); }
         , xError => {
           this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
           console.log("ooops:", this.subscribeERR)
@@ -196,8 +195,7 @@ export class AdminComponent implements OnInit {
       kisi.IlgiAlanlari = this.myDynFormGroup.value.IlgiAlanlari;
       console.log("sendUpdateValues:", kisi)
 
-      this.ogrenciService.putOgrenci(kisi).subscribe(
-        OkReturn => { console.log("OkReturn:", OkReturn); this.alertifyService.success("GÜNCELLENDİ :-)"); }
+      this.ogrenciService.putOgrenci(kisi).subscribe(OkReturn => { console.log("OkReturn:", OkReturn); this.alertifyService.success("GÜNCELLENDİ :-)"); }
         , xError => {
           this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
           console.log("ooops:", this.subscribeERR)
@@ -219,8 +217,7 @@ export class AdminComponent implements OnInit {
       kisi.UzmanlikAlanlari = this.myDynFormGroup.value.UzmanlikAlanlari;
       console.log("sendUpdateValues:", kisi)
 
-      this.ogretmenService.putOgretmen(kisi).subscribe(
-        OkReturn => { console.log("OkReturn:", OkReturn); this.alertifyService.success("GÜNCELLENDİ :-)"); }
+      this.ogretmenService.putOgretmen(kisi).subscribe(OkReturn => { console.log("OkReturn:", OkReturn); this.alertifyService.success("GÜNCELLENDİ :-)"); }
         , xError => {
           this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
           console.log("ooops:", this.subscribeERR)
@@ -230,12 +227,14 @@ export class AdminComponent implements OnInit {
     }
   }
 
+  //https://yazilimgunlugu.org/angular-4-form-kullanimi-dogrulama-validations/
+
   getAdminToSetForm(xx: number) {
     this.adminService.getAdmin(xx).subscribe(data => {
+      console.log("data = " + JSON.stringify(data));
       this.rowData = data;
-      // console.log(this.rowData)
+      console.log(this.rowData)
       this.setAdminForm()
-      // fakat başka doğru çözümü olabilir gibi... https://yazilimgunlugu.org/angular-4-form-kullanimi-dogrulama-validations/
     }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
@@ -246,10 +245,10 @@ export class AdminComponent implements OnInit {
   }
   getOgrenciToSetForm(xx: number) {
     this.ogrenciService.getOgrenci(xx).subscribe(data => {
+      console.log("data = " + JSON.stringify(data));
       this.rowData = data;
-      // console.log(this.rowData)
+      console.log(this.rowData)
       this.setOgrenciForm()
-      // fakat başka doğru çözümü olabilir gibi... https://yazilimgunlugu.org/angular-4-form-kullanimi-dogrulama-validations/
     }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
@@ -260,10 +259,10 @@ export class AdminComponent implements OnInit {
   }
   getOgretmenToSetForm(xx: number) {
     this.ogretmenService.getOgretmen(xx).subscribe(data => {
+      console.log("data = " + JSON.stringify(data));
       this.rowData = data;
-      // console.log(this.rowData)
+      console.log(this.rowData)
       this.setOgretmenForm()
-      // fakat başka doğru çözümü olabilir gibi... https://yazilimgunlugu.org/angular-4-form-kullanimi-dogrulama-validations/
     }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
@@ -275,6 +274,7 @@ export class AdminComponent implements OnInit {
 
   delKisi(aydi: number) {
     this.authService.delKisi(aydi).subscribe(data => {
+      console.log("data = " + JSON.stringify(data));
       //this.rowData = data;
       this.alertifyService.success(aydi + " silindi.");
     }
@@ -289,7 +289,7 @@ export class AdminComponent implements OnInit {
   formTitle: string = 'Sabit Bilgileri'
   buttonText: string = 'Tamam'
   roleOzelAlan: FormControl
-  
+
   ide: number
   onRowClicked(event: any) {
     console.log('event.data.IdE', event.data.idE);
