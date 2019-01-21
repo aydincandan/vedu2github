@@ -65,7 +65,7 @@ export class AdminComponent implements OnInit {
 
 
   ngOnInit() {
-    this.fillAgGrid1();
+    //this.fillAgGrid1();
 
     console.log("this.updateKisiID:", this.updateKisiID)
     console.log("this.dynrol:", this.dynrol)
@@ -85,7 +85,10 @@ export class AdminComponent implements OnInit {
   }
 
   fillAgGrid1() {
-    this.authService.getKisiler().subscribe(data => { console.log("data = " + JSON.stringify(data)); this.rowDatas1 = data; setTimeout(() => { this.gridApi.hideOverlay(); }, 600); }
+    this.authService.getKisiler().subscribe(data => {
+      console.log("data = " + JSON.stringify(data)); this.rowDatas1 = data;
+      //setTimeout(() => { this.gridApi.hideOverlay(); }, 600);
+    }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
@@ -93,6 +96,19 @@ export class AdminComponent implements OnInit {
       }
     )
   }
+  // fillAgGrid1() {
+  //   this.authService.getKisiler().subscribe(data => { console.log("data = " + JSON.stringify(data)); this.rowDatas1 = data; }
+  //     , xError => {
+  //       this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
+  //       console.log("ooops:", this.subscribeERR)
+  //       this.alertifyService.error(this.subscribeERR);
+  //     }
+  //     , () => {
+  //       console.log(this.rowDatas1.length + " adet Gride yüklendi.");
+  //       console.log("----------------");
+  //     }
+  //   )
+  // }
 
   setAdminForm() {
     this.myDynFormGroup = this.formBuilder.group(
@@ -152,12 +168,14 @@ export class AdminComponent implements OnInit {
     if (this.myDynFormGroup.valid) {
 
       if (this.dynrol == "ADM")
-        this.editAdmin()
+        this.editAdmin();
       else if (this.dynrol == "STU")
-        this.editOgrenci()
+        this.editOgrenci();
       else if (this.dynrol == "TEA")
-        this.editOgretmen()
+        this.editOgretmen();
 
+        this.alertifyService.success("GÜNCELLENDİ :-)");
+        setTimeout(() => { this.ReFreshGrid() }, 500);
     }
   }
   editAdmin() {
@@ -173,7 +191,7 @@ export class AdminComponent implements OnInit {
       kisi.YetkiSeviye = this.myDynFormGroup.value.YetkiSeviye;
       console.log("sendUpdateValues:", kisi)
 
-      this.adminService.putAdmin(kisi).subscribe(OkReturn => { console.log("OkReturn:", OkReturn); this.alertifyService.success("GÜNCELLENDİ :-)"); }
+      this.adminService.putAdmin(kisi).subscribe(OkReturn => { console.log("OkReturn:", OkReturn); }
         , xError => {
           this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
           console.log("ooops:", this.subscribeERR)
@@ -195,7 +213,7 @@ export class AdminComponent implements OnInit {
       kisi.IlgiAlanlari = this.myDynFormGroup.value.IlgiAlanlari;
       console.log("sendUpdateValues:", kisi)
 
-      this.ogrenciService.putOgrenci(kisi).subscribe(OkReturn => { console.log("OkReturn:", OkReturn); this.alertifyService.success("GÜNCELLENDİ :-)"); }
+      this.ogrenciService.putOgrenci(kisi).subscribe(OkReturn => { console.log("OkReturn:", OkReturn); }
         , xError => {
           this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
           console.log("ooops:", this.subscribeERR)
@@ -217,7 +235,7 @@ export class AdminComponent implements OnInit {
       kisi.UzmanlikAlanlari = this.myDynFormGroup.value.UzmanlikAlanlari;
       console.log("sendUpdateValues:", kisi)
 
-      this.ogretmenService.putOgretmen(kisi).subscribe(OkReturn => { console.log("OkReturn:", OkReturn); this.alertifyService.success("GÜNCELLENDİ :-)"); }
+      this.ogretmenService.putOgretmen(kisi).subscribe(OkReturn => { console.log("OkReturn:", OkReturn); }
         , xError => {
           this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
           console.log("ooops:", this.subscribeERR)
@@ -336,20 +354,30 @@ export class AdminComponent implements OnInit {
   onGridReady(event: any) {
     this.gridApi = event.api;
     this.gridColumnApi = event.columnApi;
-    this.gridApi.showLoadingOverlay();
-    // this.alertifyService.error("onGridReady");
+    this.ReFreshGrid(); // bu satır ngOnInit() in ilk satırındaydı.
     this.gridApi.sizeColumnsToFit();
   }
 
-  removeSelected() {
-    var selectedRowsData = this.gridApi.getSelectedRows();
+  ReFreshGrid() {
+    this.gridApi.showLoadingOverlay(); // no rows to show gözükmesin diye
+    this.fillAgGrid1();
+    setTimeout(() => { this.gridApi.hideOverlay(); }, 1);
+  }
 
-    for (var i in selectedRowsData) {
-      // console.log(i + ' = ' + selectedRowsData[i].idE);
-      this.delKisi(selectedRowsData[i].idE);
+  removeSelected() {
+    var selectedData = this.gridApi.getSelectedRows();
+
+    var silindiaydiler = ""; var silindisayisi = 0;
+    for (var i in selectedData) {
+      console.log(i + ' = ' + selectedData[i].idE);
+      this.delKisi(selectedData[i].idE);
+      silindiaydiler += selectedData[i].idE + ", ";
+      silindisayisi++;
     }
 
-    var res = this.gridApi.updateRowData({ remove: selectedRowsData });
+    this.alertifyService.success(silindisayisi + " adet kayıt silindi. Silinenler => " + silindiaydiler);
+
+    var res = this.gridApi.updateRowData({ remove: selectedData });
     console.log("updateRowData return : ", res);
   }
 }
