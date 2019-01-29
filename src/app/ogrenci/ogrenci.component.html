@@ -1,4 +1,4 @@
-<div class="mycontextbody">
+<div *ngIf="isAuthenticated && (RoleNAME=='ADM' ||  RoleNAME=='STU')" class="mycontextbody">
 
   <div class="container" *ngIf="RoleNAME=='ADM'">
     <h3>

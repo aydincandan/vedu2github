@@ -22,7 +22,7 @@ export class DersComponent implements OnInit {
   get RoleNAME() { return localStorage.getItem("RoleNAME") }
   private gridApi;
   private gridColumnApi;
-  private overlayLoadingTemplate;
+  public overlayLoadingTemplate;
   public columnDefs: any;
   rowDatas1 = [];
   public rowSelection: any;
@@ -68,11 +68,11 @@ export class DersComponent implements OnInit {
   ReFreshGrid() {
     this.gridApi.showLoadingOverlay(); // no rows to show gözükmesin diye
     this.fillAgGrid1();
-    setTimeout(() => { this.gridApi.hideOverlay(); }, 1);
+    setTimeout(() => { this.gridApi.hideOverlay(); }, 600);
   }
 
   fillAgGrid1() {
-    this.dersService.getDersler().subscribe(data => { console.log("data = " + JSON.stringify(data)); this.rowDatas1 = data; }
+    this.dersService.getDersler().subscribe(data => { console.log("data => " + JSON.stringify(data)); this.rowDatas1 = data; }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
@@ -88,7 +88,7 @@ export class DersComponent implements OnInit {
   dersler: __Ders[]
 
   getDers(xx: number) {
-    this.dersService.getDers(xx).subscribe(data => { console.log("data = " + JSON.stringify(data)); this.dersler = data }
+    this.dersService.getDers(xx).subscribe(data => { console.log("data => " + JSON.stringify(data)); this.dersler = data }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
@@ -205,17 +205,18 @@ export class DersComponent implements OnInit {
     for (let index = 0; index < yeninevar.length; index++) {
       this.dersService.addDers(yeninevar[index]).subscribe(xReturn => {
 
-          //console.log("yeninevar[index] : ", yeninevar[index]);
-          yeninevar[index] = xReturn;
-          //console.log("yeninevar[index] : ", yeninevar[index]);
+        //console.log("yeninevar[index] : ", yeninevar[index]);
+        yeninevar[index] = xReturn;
+        //console.log("yeninevar[index] : ", yeninevar[index]);
 
 
 
-          // var rowNode = this.gridApi.getRowNode(this.gridApi.getRowNodeId(xReturn));
-          // console.log("rowNode : ",rowNode)
-          // rowNode.setDataValue("idE", xReturn.idE);
-          // rowNode.setData(xReturn);
-        }
+        // var rowNode = this.gridApi.getRowNode(this.gridApi.getRowNodeId(xReturn));
+        // console.log("rowNode : ",rowNode)
+        // rowNode.setDataValue("idE", xReturn.idE);
+        // rowNode.setData(xReturn);
+        //this.ReFreshGrid();
+      }
         , xError => {
           this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
           //console.log("ooops:", this.subscribeERR)
@@ -223,7 +224,8 @@ export class DersComponent implements OnInit {
         }
         , () => {
           //console.log("now completed.");
-          if (yeninevar.length == 1) this.ReFreshGrid(); // aslında buna gerek kalmamalı. Data veritabanına yazıldığında gridde de görülebilmeli.
+          //if (yeninevar.length == 1) 
+          this.ReFreshGrid(); // aslında buna gerek kalmamalı. Data veritabanına yazıldığında gridde de görülebilmeli.
         }
       )
     }
@@ -272,14 +274,34 @@ export class DersComponent implements OnInit {
     console.log("updateRowData return : ", res);
   }
 
+  FNdelDersAll() {
+    this.delDersAll();
+  }
+
   delDers(aydi: number) {
-    this.dersService.delDers(aydi).subscribe(data => { console.log("data = " + JSON.stringify(data));
+    this.dersService.delDers(aydi).subscribe(data => {
+      console.log("data => " + JSON.stringify(data));
       // this.alertifyService.success(aydi + " silindi.");
     }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
         this.alertifyService.error(this.subscribeERR);
+      }
+    )
+  }
+
+  delDersAll() {
+    this.dersService.delDersAll().subscribe(data => {
+      // console.log("data => " + JSON.stringify(data));
+    }
+      , xError => {
+        this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
+        console.log("ooops:", this.subscribeERR)
+        this.alertifyService.error(this.subscribeERR);
+      }
+      ,()=>{
+        this.ReFreshGrid();
       }
     )
   }

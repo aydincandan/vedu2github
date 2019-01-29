@@ -24,6 +24,11 @@ export class DersService {
     let istek: string = environment.api_url + "/dersler/delete/" + Id; console.log("istek : " + istek)
     return this.httpClient.delete<__Ders[]>(istek)
   }
+  
+  delDersAll(): Observable<__Ders[]> {
+    let istek: string = environment.api_url + "/dersler/deleteall"; console.log("istek : " + istek)
+    return this.httpClient.delete<__Ders[]>(istek)
+  }
 
   getDersler(): Observable<__Ders[]> {
     let istek: string = environment.api_url + "/dersler"; console.log("istek : " + istek)

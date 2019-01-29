@@ -1,4 +1,4 @@
-<div class="container" *ngIf="RoleNAME=='ADM'">
+<div *ngIf="isAuthenticated && (RoleNAME=='ADM' ||  RoleNAME=='TEA')" class="container">
   <h3>
     Öğretmenler
   </h3>

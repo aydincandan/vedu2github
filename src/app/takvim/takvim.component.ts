@@ -22,7 +22,7 @@ export class TakvimComponent implements OnInit {
   get RoleNAME() { return localStorage.getItem("RoleNAME") }
   private gridApi;
   private gridColumnApi;
-  private overlayLoadingTemplate;
+  public overlayLoadingTemplate;
   public columnDefs: any;
   rowDatas1 = [];
   public rowSelection: any;
@@ -59,7 +59,7 @@ export class TakvimComponent implements OnInit {
   }
 
   fillAgGrid1() {
-    this.takvimService.getTakvimler().subscribe(data => { console.log("data = " + JSON.stringify(data)); this.rowDatas1 = data; setTimeout(() => { this.gridApi.hideOverlay(); }, 600); }
+    this.takvimService.getTakvimler().subscribe(data => { console.log("data => " + JSON.stringify(data)); this.rowDatas1 = data; setTimeout(() => { this.gridApi.hideOverlay(); }, 600); }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
@@ -71,7 +71,7 @@ export class TakvimComponent implements OnInit {
   takvimler: __Takvim[]
 
   getTakvim(xx: number) {
-    this.takvimService.getTakvim(xx).subscribe(data => { console.log("data = " + JSON.stringify(data)); this.takvimler = data }
+    this.takvimService.getTakvim(xx).subscribe(data => { console.log("data => " + JSON.stringify(data)); this.takvimler = data }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
@@ -84,6 +84,14 @@ export class TakvimComponent implements OnInit {
   onRowClicked(event: any) {
     console.log('event.data.IdE', event.data.idE);
     let ide = event.data.idE;
+    return ide;
+  }
+  onCellValueChanged(event: any) {
+    // https://www.ag-grid.com/javascript-grid-cell-editing/#event-cell-value-changed
+    console.log('onCellValueChanged : ', event.data.idE);
+    console.log('onCellValueChanged : ', event.data.title);
+    let ide = event.data.idE;
+
     return ide;
   }
 
@@ -105,7 +113,7 @@ export class TakvimComponent implements OnInit {
       console.log("sendUpdateValues:", TAKVIM)
 
       this.takvimService.addTakvim(TAKVIM)
-        .subscribe(data => { console.log("data = " + JSON.stringify(data));
+        .subscribe(data => { console.log("data => " + JSON.stringify(data));
           this.alertifyService.success("Takvim (ID : " + data.idE + ") başarıyla eklendi.")
           // this.router.navigateByUrl('/takvimDetay/' + data["ID"])
         }
@@ -144,7 +152,7 @@ export class TakvimComponent implements OnInit {
   }
 
   delTakvim(aydi: number) {
-    this.takvimService.delTakvim(aydi).subscribe(data => { console.log("data = " + JSON.stringify(data));
+    this.takvimService.delTakvim(aydi).subscribe(data => { console.log("data => " + JSON.stringify(data));
       // this.alertifyService.success(aydi + " silindi.");
     }
       , xError => {

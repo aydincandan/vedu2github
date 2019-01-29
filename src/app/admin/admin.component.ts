@@ -23,11 +23,12 @@ import {
 export class AdminComponent implements OnInit {
   subscribeERR: any = {}
   get RoleNAME() { return localStorage.getItem("RoleNAME") }
+  get isAuthenticated() { return this.authService.TicketNotEXPIRED() }
   private gridApi;
   private gridColumnApi;
-  private overlayLoadingTemplate;
+  public overlayLoadingTemplate;
   public columnDefs: any;
-  private rowDatas1 = [];
+  public rowDatas1 = [];
   public rowSelection: any;
   private rowData: any[];
 
@@ -65,8 +66,6 @@ export class AdminComponent implements OnInit {
 
 
   ngOnInit() {
-    //this.fillAgGrid1();
-
     console.log("this.updateKisiID:", this.updateKisiID)
     console.log("this.dynrol:", this.dynrol)
 
@@ -86,7 +85,7 @@ export class AdminComponent implements OnInit {
 
   fillAgGrid1() {
     this.authService.getKisiler().subscribe(data => {
-      console.log("data = " + JSON.stringify(data)); this.rowDatas1 = data;
+      console.log("data => " + JSON.stringify(data)); this.rowDatas1 = data;
       //setTimeout(() => { this.gridApi.hideOverlay(); }, 600);
     }
       , xError => {
@@ -96,19 +95,6 @@ export class AdminComponent implements OnInit {
       }
     )
   }
-  // fillAgGrid1() {
-  //   this.authService.getKisiler().subscribe(data => { console.log("data = " + JSON.stringify(data)); this.rowDatas1 = data; }
-  //     , xError => {
-  //       this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
-  //       console.log("ooops:", this.subscribeERR)
-  //       this.alertifyService.error(this.subscribeERR);
-  //     }
-  //     , () => {
-  //       console.log(this.rowDatas1.length + " adet Gride yüklendi.");
-  //       console.log("----------------");
-  //     }
-  //   )
-  // }
 
   setAdminForm() {
     this.myDynFormGroup = this.formBuilder.group(
@@ -174,8 +160,8 @@ export class AdminComponent implements OnInit {
       else if (this.dynrol == "TEA")
         this.editOgretmen();
 
-        this.alertifyService.success("GÜNCELLENDİ :-)");
-        setTimeout(() => { this.ReFreshGrid() }, 500);
+      this.alertifyService.success("GÜNCELLENDİ :-)");
+      setTimeout(() => { this.ReFreshGrid() }, 500);
     }
   }
   editAdmin() {
@@ -249,7 +235,7 @@ export class AdminComponent implements OnInit {
 
   getAdminToSetForm(xx: number) {
     this.adminService.getAdmin(xx).subscribe(data => {
-      console.log("data = " + JSON.stringify(data));
+      console.log("data => " + JSON.stringify(data));
       this.rowData = data;
       console.log(this.rowData)
       this.setAdminForm()
@@ -263,7 +249,7 @@ export class AdminComponent implements OnInit {
   }
   getOgrenciToSetForm(xx: number) {
     this.ogrenciService.getOgrenci(xx).subscribe(data => {
-      console.log("data = " + JSON.stringify(data));
+      console.log("data => " + JSON.stringify(data));
       this.rowData = data;
       console.log(this.rowData)
       this.setOgrenciForm()
@@ -277,7 +263,7 @@ export class AdminComponent implements OnInit {
   }
   getOgretmenToSetForm(xx: number) {
     this.ogretmenService.getOgretmen(xx).subscribe(data => {
-      console.log("data = " + JSON.stringify(data));
+      console.log("data => " + JSON.stringify(data));
       this.rowData = data;
       console.log(this.rowData)
       this.setOgretmenForm()
@@ -292,7 +278,7 @@ export class AdminComponent implements OnInit {
 
   delKisi(aydi: number) {
     this.authService.delKisi(aydi).subscribe(data => {
-      console.log("data = " + JSON.stringify(data));
+      console.log("data => " + JSON.stringify(data));
       //this.rowData = data;
       this.alertifyService.success(aydi + " silindi.");
     }
@@ -350,18 +336,38 @@ export class AdminComponent implements OnInit {
 
     return ide;
   }
+  onCellValueChanged(event: any) {
+    // https://www.ag-grid.com/javascript-grid-cell-editing/#event-cell-value-changed
+    console.log('onCellValueChanged : ', event.data.idE);
+    console.log('onCellValueChanged : ', event.data.title);
+    let ide = event.data.idE;
+
+    return ide;
+  }
 
   onGridReady(event: any) {
     this.gridApi = event.api;
     this.gridColumnApi = event.columnApi;
     this.ReFreshGrid(); // bu satır ngOnInit() in ilk satırındaydı.
     this.gridApi.sizeColumnsToFit();
+
+    setTimeout(() => {
+
+      var nodeROW = this.gridApi.getRowNode(1); // https://www.ag-grid.com/javascript-grid-accessing-data/
+      nodeROW.setSelected(true);
+      this.onRowClicked(nodeROW);
+
+    }, 2000);
+
+
+
   }
+
 
   ReFreshGrid() {
     this.gridApi.showLoadingOverlay(); // no rows to show gözükmesin diye
     this.fillAgGrid1();
-    setTimeout(() => { this.gridApi.hideOverlay(); }, 1);
+    setTimeout(() => { this.gridApi.hideOverlay(); }, 600);
   }
 
   removeSelected() {

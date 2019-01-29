@@ -65,7 +65,7 @@ export class RegisterComponent implements OnInit {
       // kişi conflict ile karşılaşırsa (15 saniye gibi bir süre içerisinde güvenlik içinmi buna gerek var) login le birlikte kendini içeride bulsun !
 
       this.authService.KisiRegister(this.registerUser)
-        .subscribe(data => { console.log("data = " + JSON.stringify(data));
+        .subscribe(data => { console.log("data => " + JSON.stringify(data));
           this.alertifyService.success("TEBRİKLER " + data.myRequestObject.email + " KAYIT OLDUNUZ :-> " + data.modelStateAddedErrors[0].errorMessage)
         }
           , xError => {

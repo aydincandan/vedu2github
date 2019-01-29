@@ -42,7 +42,7 @@ export class NavComponent implements OnInit {
 
     this.authService.KisiLogin(this.loginUser)
       .subscribe(data => {
-        console.log("data = " + JSON.stringify(data));
+        console.log("data => " + JSON.stringify(data));
         this.authService.saveToken(data);
         this.authService.userToken = data;
         this.authService.decodedToken = this.authService.jwtHelper.decodeToken(data.toString());
@@ -52,7 +52,7 @@ export class NavComponent implements OnInit {
         // username ve userID burda mevcut ve aşağıdaki gibi de yakaladık
         let ccc: __Kisi[]
         this.authService.getLoggedKisi().subscribe(data => {
-          console.log("data = " + JSON.stringify(data));
+          console.log("data => " + JSON.stringify(data));
           ccc = data
           localStorage.setItem("RoleNAME", data[0].KISITIPI)
           localStorage.setItem("IdE2", data[0].IdE.toString())

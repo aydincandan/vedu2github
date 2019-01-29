@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { __Kisi, ogrenciUpdateDto } from '../_data/modeller/hepsi.model';
 import { OgrenciService } from "../_data/servisler/ogrenci.service";
+import { AuthService } from "../_data/servisler/auth.service";
 import { AlertifyService } from '../_data/servisler/alertify.service';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -23,6 +24,7 @@ import {
 export class OgrenciComponent implements OnInit {
   subscribeERR: any = {}
   get RoleNAME() { return localStorage.getItem("RoleNAME") }
+  get isAuthenticated() { return this.authService.TicketNotEXPIRED() }
   private gridApi;
   private gridColumnApi;
   private overlayLoadingTemplate;
@@ -31,7 +33,7 @@ export class OgrenciComponent implements OnInit {
   public rowSelection: any;
   private rowData: any[];
 
-  constructor(private ogrenciService: OgrenciService, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, private alertifyService: AlertifyService) {
+  constructor(private ogrenciService: OgrenciService, private authService: AuthService, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, private alertifyService: AlertifyService) {
     this.columnDefs = [
       { headerName: 'TYPE', field: 'kisitipi' },
       { headerName: 'ID', field: 'idE' },
@@ -72,7 +74,7 @@ export class OgrenciComponent implements OnInit {
   }
 
   fillAgGrid1() {
-    this.ogrenciService.getOgrenciler().subscribe(data => { console.log("data = " + JSON.stringify(data)); this.rowDatas1 = data; setTimeout(() => {this.gridApi.hideOverlay();}, 600); }
+    this.ogrenciService.getOgrenciler().subscribe(data => { console.log("data => " + JSON.stringify(data)); this.rowDatas1 = data; setTimeout(() => {this.gridApi.hideOverlay();}, 600); }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
         console.log("ooops:", this.subscribeERR)
@@ -136,7 +138,7 @@ export class OgrenciComponent implements OnInit {
   }
 
   getOgrenci(xx: number) {
-    this.ogrenciService.getOgrenci(xx).subscribe(data => { console.log("data = " + JSON.stringify(data));
+    this.ogrenciService.getOgrenci(xx).subscribe(data => { console.log("data => " + JSON.stringify(data));
       this.rowData = data;
       // console.log(this.rowData)
       this.setmyDynFormGroup()
