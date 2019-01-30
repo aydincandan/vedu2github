@@ -54,7 +54,7 @@ export class OgretmenComponent implements OnInit {
   ngOnInit() {
     this.fillAgGrid1()
     this.createmyDynFormGroup();
-    this.getOgretmen(this.updateKisiID);
+    this.CallMyService(this.ogretmenService.getOgretmen(this.updateKisiID))
     console.log("this.rowData : ", this.rowData)
 
     this.activatedRoute.params.subscribe(params => {
@@ -138,8 +138,8 @@ export class OgretmenComponent implements OnInit {
     }
   }
 
-  getOgretmen(xx: number) {
-    this.ogretmenService.getOgretmen(xx).subscribe(data => { console.log("data => " + JSON.stringify(data));
+  CallMyService(servisistegi:any) {
+    servisistegi.subscribe(data => { console.log("data => " + JSON.stringify(data));
       this.rowData = data;
       // console.log(this.rowData)
       this.setmyDynFormGroup()
