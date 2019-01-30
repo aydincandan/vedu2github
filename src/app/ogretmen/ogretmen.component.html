@@ -1,56 +1,67 @@
-<div *ngIf="isAuthenticated && (RoleNAME=='ADM' ||  RoleNAME=='TEA')" class="container">
-  <h3>
-    Öğretmenler
-  </h3>
+<div *ngIf="isAuthenticated && (RoleNAME=='ADM' ||  RoleNAME=='TEA')" class="mycontextbody">
 
-  <div style="height: 300px;">
-    <ag-grid-angular style="width: 100%; height: 100%;" class="ag-theme-balham" [enableColResize]="true" [enableSorting]="true" [enableFilter]="true" [pagination]="true" [rowData]="rowDatas1" [columnDefs]="columnDefs" (rowClicked)='onRowClicked($event)' (cellValueChanged)='onCellValueChanged($event)' (gridReady)="onGridReady($event)" [rowSelection]="rowSelection" [paginationPageSize]=8 [overlayLoadingTemplate]="overlayLoadingTemplate">
-    </ag-grid-angular>
+  <div class="container" *ngIf="RoleNAME=='ADM'">
+    <h3>
+      Öğretmenler
+    </h3>
+
+    <div style="height: 300px;">
+      <ag-grid-angular style="width: 100%; height: 100%;" class="ag-theme-balham" [enableColResize]="true"
+        [enableSorting]="true" [enableFilter]="true" [pagination]="true" [rowData]="rowDatas1" [columnDefs]="columnDefs"
+        (rowClicked)='onRowClicked($event)' (cellValueChanged)='onCellValueChanged($event)' (gridReady)="onGridReady($event)"
+        [rowSelection]="rowSelection" [paginationPageSize]=8 [overlayLoadingTemplate]="overlayLoadingTemplate">
+      </ag-grid-angular>
+    </div>
   </div>
-</div>
 
-<div class="container" *ngIf="RoleNAME=='TEA'">
+  <div class="container" *ngIf="RoleNAME=='TEA'">
 
-  <div class="myformCARD">
-    <form [formGroup]="myDynFormGroup" (ngSubmit)="editOgretmen()">
+    <div class="myformCARD">
+      <form [formGroup]="myDynFormGroup" (ngSubmit)="editOgretmen()">
 
-      <h4>Sabit Bilgileriniz</h4>
+        <h4>Sabit Bilgileriniz</h4>
 
-      <div class="input-group input-group-sm mb-3">
-        <div class="input-group-prepend"><span class="input-group-text">Kullanıcı Adı</span></div>
-        <input type="text" id="Username" name="Username" class="form-control" formControlName="Username">
-      </div>
-      <div class="input-group input-group-sm mb-3">
-        <div class="input-group-prepend"><span class="input-group-text">Adı</span></div>
-        <input type="text" id="Adi" name="Adi" class="form-control" formControlName="Adi">
-      </div>
-      <div class="input-group input-group-sm mb-3">
-        <div class="input-group-prepend"><span class="input-group-text">Soyadı</span></div>
-        <input type="text" id="Soyadi" name="Soyadi" class="form-control" formControlName="Soyadi">
-      </div>
-      <div class="input-group input-group-sm mb-3">
-        <div class="input-group-prepend"><span class="input-group-text">TC Kimlik</span></div>
-        <input type="text" id="TCkimlik" name="TCkimlik" class="form-control" formControlName="TCkimlik">
-        <span class="help-block" *ngIf="myDynFormGroup.get('TCkimlik').hasError('minlength') && myDynFormGroup.get('TCkimlik').touched">En az 11 karakter olmalı</span>
-        <span class="help-block" *ngIf="myDynFormGroup.get('TCkimlik').hasError('maxlength') && myDynFormGroup.get('TCkimlik').touched">11 karakteri geçemez</span>
-      </div>
-      <div class="input-group input-group-sm mb-3">
-        <div class="input-group-prepend"><span class="input-group-text">Telefon</span></div>
-        <input type="text" id="telefon1" name="telefon1" class="form-control" formControlName="telefon1">
-        <span class="help-block" *ngIf="myDynFormGroup.get('telefon1').hasError('minlength') && myDynFormGroup.get('telefon1').touched">En az 10 karakter olmalı</span>
-        <span class="help-block" *ngIf="myDynFormGroup.get('telefon1').hasError('maxlength') && myDynFormGroup.get('telefon1').touched">10 karakteri geçemez</span>
-      </div>
-      <div class="input-group input-group-sm mb-3">
-        <div class="input-group-prepend"><span class="input-group-text">Uzmanlık</span></div>
-        <input type="text" id="UzmanlikAlanlari" name="UzmanlikAlanlari" class="form-control" formControlName="UzmanlikAlanlari">
-      </div>
-      <div class="text-right">
-        <button [disabled]="!myDynFormGroup.valid" type="submit" class="btn btn-primary btn-sm">Tamam</button>
-      </div>
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend"><span class="input-group-text">Kullanıcı Adı</span></div>
+          <input type="text" id="Username" name="Username" class="form-control" formControlName="Username">
+        </div>
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend"><span class="input-group-text">Adı</span></div>
+          <input type="text" id="Adi" name="Adi" class="form-control" formControlName="Adi">
+        </div>
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend"><span class="input-group-text">Soyadı</span></div>
+          <input type="text" id="Soyadi" name="Soyadi" class="form-control" formControlName="Soyadi">
+        </div>
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend"><span class="input-group-text">TC Kimlik</span></div>
+          <input type="text" id="TCkimlik" name="TCkimlik" class="form-control" formControlName="TCkimlik">
+          <span class="help-block" *ngIf="myDynFormGroup.get('TCkimlik').hasError('minlength') && myDynFormGroup.get('TCkimlik').touched">En
+            az 11 karakter olmalı</span>
+          <span class="help-block" *ngIf="myDynFormGroup.get('TCkimlik').hasError('maxlength') && myDynFormGroup.get('TCkimlik').touched">11
+            karakteri geçemez</span>
+        </div>
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend"><span class="input-group-text">Telefon</span></div>
+          <input type="text" id="telefon1" name="telefon1" class="form-control" formControlName="telefon1">
+          <span class="help-block" *ngIf="myDynFormGroup.get('telefon1').hasError('minlength') && myDynFormGroup.get('telefon1').touched">En
+            az 10 karakter olmalı</span>
+          <span class="help-block" *ngIf="myDynFormGroup.get('telefon1').hasError('maxlength') && myDynFormGroup.get('telefon1').touched">10
+            karakteri geçemez</span>
+        </div>
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend"><span class="input-group-text">Uzmanlık</span></div>
+          <input type="text" id="UzmanlikAlanlari" name="UzmanlikAlanlari" class="form-control" formControlName="UzmanlikAlanlari">
+        </div>
+        <div class="text-right">
+          <button [disabled]="!myDynFormGroup.valid" type="submit" class="btn btn-primary btn-sm">Tamam</button>
+        </div>
 
-      <h6>{{myDynFormGroup.value|json}}</h6>
-      <h6>{{myDynFormGroup.status|json}}</h6>
+        <h6>{{myDynFormGroup.value|json}}</h6>
+        <h6>{{myDynFormGroup.status|json}}</h6>
 
-    </form>
+      </form>
+    </div>
   </div>
+
 </div>

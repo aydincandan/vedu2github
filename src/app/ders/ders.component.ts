@@ -15,7 +15,7 @@ import {
   selector: 'app-ders',
   templateUrl: './ders.component.html',
   styleUrls: ['./ders.component.css'],
-  providers: [DersService]
+  //providers: [DersService]
 })
 export class DersComponent implements OnInit {
   subscribeERR: any = {}

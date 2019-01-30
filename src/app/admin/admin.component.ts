@@ -18,7 +18,8 @@ import {
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css'],
-  // olmasa oluyor mu? providers: [AuthService, AdminService, OgrenciService, OgretmenService, AlertifyService] // gerek var mı?
+  // olmasa oluyor mu? 
+  //providers: [AuthService, AdminService, OgrenciService, OgretmenService, AlertifyService] // gerek var mı?
 })
 export class AdminComponent implements OnInit {
   subscribeERR: any = {}
@@ -68,7 +69,7 @@ export class AdminComponent implements OnInit {
   ngOnInit() {
     console.log("this.updateKisiID:", this.updateKisiID)
     console.log("this.dynrol:", this.dynrol)
-
+debugger;
     this.createBaseForm()
 
     this.activatedRoute.params.subscribe(params => {

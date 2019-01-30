@@ -15,7 +15,7 @@ import {
   selector: 'app-takvim',
   templateUrl: './takvim.component.html',
   styleUrls: ['./takvim.component.css'],
-  providers: [TakvimService]
+  //providers: [TakvimService]
 })
 export class TakvimComponent implements OnInit {
   subscribeERR: any = {}

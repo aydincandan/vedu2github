@@ -16,7 +16,7 @@ import {
   selector: 'app-ogretmen',
   templateUrl: './ogretmen.component.html',
   styleUrls: ['./ogretmen.component.css'],
-  // providers: [OgretmenService]
+  //providers: [OgretmenService]
 })
 
 
@@ -74,6 +74,7 @@ export class OgretmenComponent implements OnInit {
   }
 
   fillAgGrid1() {
+    if(this.RoleNAME!="ADM")return;
     this.ogretmenService.getOgretmenler().subscribe(data => { console.log("data => " + JSON.stringify(data)); this.rowDatas1 = data; setTimeout(() => {this.gridApi.hideOverlay();}, 600); }
       , xError => {
         this.subscribeERR = xError.statusText + "(" + xError.status + ") " + xError.error;
