@@ -69,7 +69,7 @@ export class AdminComponent implements OnInit {
   ngOnInit() {
     console.log("this.updateKisiID:", this.updateKisiID)
     console.log("this.dynrol:", this.dynrol)
-debugger;
+// debugger;
     this.createBaseForm()
 
     this.activatedRoute.params.subscribe(params => {

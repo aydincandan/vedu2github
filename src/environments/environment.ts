@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  api_url: 'http://localhost:61061/api'
+  //api_url: 'http://localhost:61061/api',
+  api_url: "https://veduboxapi.azurewebsites.net/api"
 };
 
 /*
