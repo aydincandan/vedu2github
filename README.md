@@ -1,5 +1,5 @@
 # Vedu2
-## Super Git Guide Kaynak
+## ::Super Git Guide Kaynak::
 http://rogerdudler.github.io/git-guide/index.tr.html
 
 ayrıca http://volkanaltan.blogspot.com/2012/05/git-notlarm.html
