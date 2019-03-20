@@ -37,11 +37,12 @@ import { SlimLoadingBarModule } from 'ng2-slim-loading-bar';
       AdminComponent,
       OgrenciComponent,
       OgretmenComponent,
-      DersComponent, DersDetayComponent,
+      DersComponent,
+      DersDetayComponent,
       TakvimComponent,
       RegisterComponent,
       NavComponent,
-      WelcomeComponent,
+      WelcomeComponent
    ],
    imports: [
       BrowserModule,
@@ -54,14 +55,13 @@ import { SlimLoadingBarModule } from 'ng2-slim-loading-bar';
    ],
    providers: [
       DatePipe,
-
-      // AlertifyService,
-      // AuthService,
-      // AdminService,
-      // OgrenciService,
-      // OgretmenService,
-      // DersService,
-      // TakvimService
+      //AlertifyService,
+      //AuthService,
+      //AdminService,
+      //OgrenciService,
+      //OgretmenService,
+      //DersService,
+      //TakvimService
    ],
    bootstrap: [
       AppComponent
