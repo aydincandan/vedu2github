@@ -46,7 +46,7 @@ export class NavComponent implements OnInit {
         this.authService.saveToken(data);
         this.authService.userToken = data;
         this.authService.decodedToken = this.authService.jwtHelper.decodeToken(data.toString());
-
+        console.log("this.authService.decodedToken:",this.authService.decodedToken)
         this.alertifyService.success("auth.service Sisteme giriş(" + localStorage.getItem(_LUK) + ") yapıldı(" + this.authService.getCurrentUserId() + ")");
 
         // username ve userID burda mevcut ve aşağıdaki gibi de yakaladık
